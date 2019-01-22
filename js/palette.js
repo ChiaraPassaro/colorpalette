@@ -30,7 +30,7 @@ function getTriad(baseColor){
   if (isGreaterThan(thirdColor, totalDegree)){
     thirdColor = thirdColor - totalDegree;
   }
-  thirdColor = new hsl(thirdColor, 50, 50);
+  thirdColor = new hsl(thirdColor, baseColor.getSaturation(), baseColor.getBrightness());
 
   return [baseColor, secondColor, thirdColor];
 }

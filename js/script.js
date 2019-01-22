@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-  var color = new hsl(348, 70, 50);
+  var color = new hsl(0, 80, 50);
   var triad = getTriad(color);
 
   $('body').prepend('<h1>Your colour</h1><div class="first-color" style="background: '+ color.printHsl() +'">'+ color.getDegree() +'/'+ color.getSaturation() + '/' + color.getBrightness() + '<div>');
