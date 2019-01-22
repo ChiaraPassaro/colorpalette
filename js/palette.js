@@ -46,12 +46,13 @@ function getComplementar(baseColor, numColor, step){
   }
   var arrayColors = [firstComplementar];
 
-  //ciclo che prende colore precedente e inserisce +1
+  //ciclo che prende colore precedente e inserisce -1
   for (var i = numColor / 2; i >= 1; i--) {
     var newColor = arrayColors[arrayColors.length - 1] - step;
     arrayColors.push(newColor);
   }
 
+  //ciclo che prende colore precedente e inserisce +1
   for (var k = 0 ; k < numColor / 2; k++) {
     newColor = arrayColors[0] + step;
     arrayColors.unshift(newColor);

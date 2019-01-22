@@ -15,3 +15,6 @@ Argomenti - colore di base
 Crea palette di colori complementari:
 Funzione getComplementar(baseColor, numColor, step)
 Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro
+
+ToDo
+Check su argomenti getComplementar(baseColor, numColor, step)

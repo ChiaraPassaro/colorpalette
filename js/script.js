@@ -15,7 +15,7 @@ $(document).ready(function(){
   var degree = 6;
   var complementar = getComplementar(color, range, degree);
 
-  $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + degree +'</h1>');
+  $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + degree +'.</h1>');
   for (var i = 0; i < complementar.length; i++) {
     $('.complementary').append('<div class="color" style="background: '+ complementar[i] +'"><div>')
   }
