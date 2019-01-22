@@ -1,0 +1,22 @@
+.row{
+  position: relative;
+  width: 100%;
+}
+.row::after{
+  content: '';
+  display: table;
+  clear: both;
+}
+.first-color{
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+.color{
+  display: block;
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
