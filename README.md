@@ -18,3 +18,5 @@ Argomenti - colore di base, numero di colori desiderati, step in gradi tra un co
 
 ToDo
 Check su argomenti getComplementar(baseColor, numColor, step)
+
+![Color Palette](screen/screen.png)
