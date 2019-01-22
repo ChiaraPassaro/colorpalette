@@ -32,7 +32,7 @@ function getTriad(baseColor){
   }
   thirdColor = new hsl(thirdColor, 50, 50);
 
-  return [baseColor.printHsl(), secondColor.printHsl(), thirdColor.printHsl()];
+  return [baseColor, secondColor, thirdColor];
 }
 
 
@@ -58,12 +58,13 @@ function getComplementar(baseColor, numColor, step){
     arrayColors.unshift(newColor);
   }
 
+  //sostituisco i gradi oltre i 360
   arrayColors.map(function(currentValue, index){
     if(isGreaterThan(currentValue, totalDegree)){
       arrayColors[index] = currentValue - totalDegree;
     }
+    //sostituisco con nuovo oggetto hsl()
     arrayColors[index] = new hsl(arrayColors[index], baseColor.getSaturation(), baseColor.getBrightness());
-    arrayColors[index] = arrayColors[index].printHsl();
   });
 
   return arrayColors;
