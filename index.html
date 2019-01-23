@@ -7,8 +7,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
-    <div class="triad row"></div>
-    <div class="complementary row"></div>
+    <div class="insert-yourcolor row">
+      <input type="text" id="degree" placeholder="Insert Degree Value">
+      <input type="text" id="saturation" placeholder="Insert saturation Value">
+      <input type="text" id="brightness" placeholder="Insert Brightness Value">
+      <input type="text" id="range" placeholder="Insert range for complementary">
+      <input type="text" id="step-degree" placeholder="Insert degree for complementary">
+      <button type="button" name="send" id="send">send</button>
+    </div>
+
+    <div class="results">
+      <div class="basecolor"></div>
+      <div class="triad row"></div>
+      <div class="complementary row"></div>
+    </div>
+
     <script src="js/utilities.js" charset="utf-8"></script>
     <script src="js/palette.js" charset="utf-8"></script>
     <script src="js/script.js" charset="utf-8"></script>
