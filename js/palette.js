@@ -16,22 +16,23 @@ function hsl(degree, saturation, brightness){
     var _saturation = parseFloat(saturation.toFixed(2));
     var _brightness = parseFloat(brightness.toFixed(2));
 
+    this.getDegree = function functionName() {
+      return _degree;
+    };
+    this.getSaturation = function functionName() {
+      return saturation;
+    };
+    this.getBrightness = function functionName() {
+      return brightness;
+    };
+    this.printHsl = function functionName() {
+      return 'hsl(' + degree + ',' + saturation + '%,' + brightness + '%)';
+    };
+
   } catch (error) {
     alert(error);
   }
-
-  this.getDegree = function functionName() {
-    return _degree;
-  };
-  this.getSaturation = function functionName() {
-    return saturation;
-  };
-  this.getBrightness = function functionName() {
-    return brightness;
-  };
-  this.printHsl = function functionName() {
-    return 'hsl(' + degree + ',' + saturation + '%,' + brightness + '%)';
-  };
+  
 }
 
 function getTriad(baseColor){
