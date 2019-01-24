@@ -21,4 +21,4 @@ Gradi massimi consentiti numColor*step 140
 ToDo color schemes
 Analogous, Split-Complementary, Tetradic, Square, Monochrome
 
-![Color Palette](screen/screen.png)
+![Color Palette](screen/screen11.png)
