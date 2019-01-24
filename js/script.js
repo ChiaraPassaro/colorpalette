@@ -32,7 +32,6 @@ function sendData(){
       insertTriad(color);
       if(!isNaN(range) && !isNaN(stepDegree)){
         $('.complementary').html('');
-        $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + stepDegree +'.</h1>');
         insertComplementary(color, range, stepDegree);
       } else {
         $('.complementary').html('');
@@ -62,9 +61,17 @@ function insertTriad(color){
 }
 
 function insertComplementary(color, range, degree){
-  var complementar = getComplementar(color, range, degree);
+  try {
+    var complementar = getComplementar(color, range, degree);
 
-  for (var i = 0; i < complementar.length; i++) {
-    $('.complementary').append('<div class="color" style="background: '+ complementar[i].printHsl() +'">'+ complementar[i].getDegree() +'/'+ complementar[i].getSaturation() + '/' + complementar[i].getBrightness() + '<div>')
+    if(color && range && degree){
+      $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + degree +'.</h1>');
+    }
+    
+    for (var i = 0; i < complementar.length; i++) {
+      $('.complementary').append('<div class="color" style="background: '+ complementar[i].printHsl() +'">'+ complementar[i].getDegree() +'/'+ complementar[i].getSaturation() + '/' + complementar[i].getBrightness() + '<div>')
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
