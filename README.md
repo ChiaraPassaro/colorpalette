@@ -1,6 +1,6 @@
 Script che genera diversi tipi di palette a partire da un colore di base
 
-V1.0
+V1.1
 
 Funzionalità
 
@@ -15,8 +15,10 @@ Argomenti - colore di base
 Crea palette di colori complementari:
 Funzione getComplementar(baseColor, numColor, step)
 Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro
+Gradi massimi consentiti numColor*step 140
 
-ToDo
-Check su argomenti getComplementar(baseColor, numColor, step)
+
+ToDo color schemes
+Analogous, Split-Complementary, Tetradic, Square, Monochrome
 
 ![Color Palette](screen/screen.png)

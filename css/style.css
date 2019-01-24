@@ -3,9 +3,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+.template{
+  display: none;
+}
+
+body{
+  font-family: 'Rambla', sans-serif;
+  font-size: 20px;
+}
 .row{
   position: relative;
   width: 100%;
+  margin-bottom: 30px;
 }
 .row::after{
   content: '';
@@ -36,18 +45,32 @@
 
 .results{
   width: 80%;
-  padding:0 10%;
+  margin: 0 auto;
+  padding-bottom: 20px;
 }
+
 .first-color{
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 10px;
 }
-.color{
-  display: block;
+
+.scheme{
+  margin: 10px 0;
+}
+.scheme__title{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 140%;
+  margin-left: 10px;
+}
+.scheme__color{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   float: left;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 10px;
 }

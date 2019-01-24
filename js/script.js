@@ -30,18 +30,11 @@ function sendData(){
     try {
       var color = new hsl(degree, saturation, brightness);
       insertTriad(color);
-      if(!isNaN(range) && !isNaN(stepDegree)){
-        $('.complementary').html('');
-        insertComplementary(color, range, stepDegree);
-      } else {
-        $('.complementary').html('');
-        $('.complementary').append('<h1>Dati inseriti non corretti. Valori di default attivi.</h1>');
-        insertComplementary(color);
-      }
+      $('.complementary').html('');
+      insertComplementary(color, range, stepDegree);
     } catch (error) {
       console.log(error);
     }
-
   } else {
     alert('Inserisci i dati');
   }
@@ -49,28 +42,65 @@ function sendData(){
 }
 
 function insertTriad(color){
-  var triad = getTriad(color);
   $('.basecolor').html('');
-  $('.triad').html('');
+  var scheme = $('.template .scheme').clone();
+  scheme.children('.scheme__title').html('Your colour');
+  var colorTpl = scheme.find('.scheme__color').clone();
+  scheme.find('.scheme__colors').html('');
+  colorTpl.css('background', color.printHsl()).addClass('first-color');
+  colorTpl.html(color.printHsl());
+  scheme.find('.scheme__colors').append(colorTpl);
+  $('.basecolor').append(scheme);
 
-  $('.basecolor').append('<h1>Your colour</h1><div class="first-color" style="background: '+ color.printHsl() +'">'+ color.getDegree() +'/'+ color.getSaturation() + '/' + color.getBrightness() + '<div>');
-  $('.triad').append('<h1>Triad colours</h1>');
-  for (var i = 0; i < triad.length; i++) {
-    $('.triad').append('<div class="color" style="background: '+ triad[i].printHsl() +'">'+ triad[i].getDegree() +'/'+ triad[i].getSaturation() + '/' + triad[i].getBrightness() + '<div>');
+  try {
+
+    var triad = getTriad(color);
+    var scheme = $('.template .scheme').clone();
+    scheme.children('.scheme__title').html('Triad colours');
+
+    $('.triad').html('');
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < triad.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', triad[i].printHsl());
+      thisColor.html(triad[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.triad').append(scheme);
+  } catch (error) {
+    console.log(error);
   }
 }
 
 function insertComplementary(color, range, degree){
   try {
     var complementar = getComplementar(color, range, degree);
+    var scheme = $('.template .scheme').clone();
 
+    //se non sono inserti i dati si visualizzano quelli di default
     if(color && range && degree){
-      $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + degree +'.</h1>');
+      scheme.children('.scheme__title').html('Complementary colours.<br>Range: ' + range + ', Degree: ' + degree);
+    } else {
+      scheme.children('.scheme__title').html('Complementary colours. Range: Default, Degree: Default');
     }
-    
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
     for (var i = 0; i < complementar.length; i++) {
-      $('.complementary').append('<div class="color" style="background: '+ complementar[i].printHsl() +'">'+ complementar[i].getDegree() +'/'+ complementar[i].getSaturation() + '/' + complementar[i].getBrightness() + '<div>')
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', complementar[i].printHsl());
+      thisColor.html(complementar[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
     }
+
+    $('.complementary').append(scheme);
+
   } catch (error) {
     console.log(error);
   }
