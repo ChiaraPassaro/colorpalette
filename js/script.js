@@ -25,20 +25,24 @@ function sendData(){
   var brightness = parseFloat(inputBrightness.val());
   var range = Math.floor(parseInt(inputRange.val()));
   var stepDegree = parseFloat(inputStepDegree.val());
-  //var color = new hsl(degree, 'saturation', 'brightness');
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
-    var color = new hsl(degree, saturation, brightness);
-    insertTriad(color);
-    if(!isNaN(range) && !isNaN(stepDegree)){
-      $('.complementary').html('');
-      $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + stepDegree +'.</h1>');
-      insertComplementary(color, range, stepDegree);
-    } else {
-      $('.complementary').html('');
-      $('.complementary').append('<h1>Dati inseriti non corretti. Valori di default attivi.</h1>');
-      insertComplementary(color);
+    try {
+      var color = new hsl(degree, saturation, brightness);
+      insertTriad(color);
+      if(!isNaN(range) && !isNaN(stepDegree)){
+        $('.complementary').html('');
+        $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + stepDegree +'.</h1>');
+        insertComplementary(color, range, stepDegree);
+      } else {
+        $('.complementary').html('');
+        $('.complementary').append('<h1>Dati inseriti non corretti. Valori di default attivi.</h1>');
+        insertComplementary(color);
+      }
+    } catch (error) {
+      console.log(error);
     }
+
   } else {
     alert('Inserisci i dati');
   }

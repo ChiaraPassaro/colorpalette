@@ -2,55 +2,42 @@
 //********Funzioni********//
 //************************//
 
+
 function hsl(degree, saturation, brightness){
   //controllo se i dati sono esatti
-  try {
-    if(isNaN(degree)) throw 'Degree in Not a Number';
-    if(!isInRange(degree, 0, 360)) throw 'Degree number out of range';
-    if(isNaN(saturation)) throw 'Saturation in Not a Number';
-    if(!isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
-    if(isNaN(brightness)) throw 'Brightness in Not a Number';
-    if(!isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
 
-    var _degree = parseFloat(degree.toFixed(2));
-    var _saturation = parseFloat(saturation.toFixed(2));
-    var _brightness = parseFloat(brightness.toFixed(2));
+  if(isNaN(degree)) throw 'Degree in Not a Number';
+  if(!isInRange(degree, 0, 360)) throw 'Degree number out of range';
+  if(isNaN(saturation)) throw 'Saturation in Not a Number';
+  if(!isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
+  if(isNaN(brightness)) throw 'Brightness in Not a Number';
+  if(!isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
 
-    this.getDegree = function functionName() {
-      return _degree;
-    };
-    this.getSaturation = function functionName() {
-      return saturation;
-    };
-    this.getBrightness = function functionName() {
-      return brightness;
-    };
-    this.printHsl = function functionName() {
-      return 'hsl(' + degree + ',' + saturation + '%,' + brightness + '%)';
-    };
+  var _degree = parseFloat(degree.toFixed(2));
+  var _saturation = parseFloat(saturation.toFixed(2));
+  var _brightness = parseFloat(brightness.toFixed(2));
 
-  } catch (error) {
-    alert(error);
-  }
-  
+  this.getDegree = function functionName() {
+    return _degree;
+  };
+  this.getSaturation = function functionName() {
+    return saturation;
+  };
+  this.getBrightness = function functionName() {
+    return brightness;
+  };
+  this.printHsl = function functionName() {
+    return 'hsl(' + degree + ',' + saturation + '%,' + brightness + '%)';
+  };
+
 }
 
 function getTriad(baseColor){
   //controllo i dati
-  try {
     if(typeof baseColor != 'object') throw 'Basecolor is not an object';
 
-    //se vanno bene genero
     var _baseColor = baseColor;
-    return triad(_baseColor);
 
-  } catch (error) {
-
-    alert(error);
-
-  }
-
-  function triad(){
     var totalDegree = 360;
     var secondColor = parseFloat((_baseColor.getDegree() + totalDegree/3).toFixed(2));
     var thirdColor = parseFloat((_baseColor.getDegree() + (totalDegree/3) * 2).toFixed(2));
@@ -68,18 +55,20 @@ function getTriad(baseColor){
     thirdColor = new hsl(thirdColor, _baseColor.getSaturation(), _baseColor.getBrightness());
 
     return [_baseColor, secondColor, thirdColor];
-  }
 
 }
-
 
 //funzione che richiama un range di colori complementari
 //se il numero di colori e gli step non sono specificati default 3 colori e 10 step
 function getComplementar(baseColor, numColor, stepDegree){
+
   var step = stepDegree || 10;
   step = parseFloat(step.toFixed(2));
   var num = numColor || 3;
-  step = Math.floor(num);
+  num = Math.floor(num);
+
+  //se il numero di gradi è superiore a 140 errore
+  if(step * num > 140) throw 'Out of range > 140degree';
 
   var totalDegree = 360;
   var firstComplementar = parseFloat((baseColor.getDegree() + 180).toFixed(2));
