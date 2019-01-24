@@ -6,20 +6,44 @@ var inputStepDegree = $('#step-degree');
 var button = $('#send');
 
 $(document).ready(function(){
+
   button.click(function(){
-    var degree = parseInt(inputDegree.val()) ;
-    var saturation = parseInt(inputSaturation.val());
-    var brightness = parseInt(inputBrightness.val());
-    var range = parseInt(inputRange.val());
-    var stepDegree = parseInt(inputStepDegree.val());
+    sendData();
+  });
 
-    var color = new hsl(degree, saturation, brightness);
-
-    insertTriad(color);
-    insertComplementary(color, range, stepDegree);
+  $(document).keypress(function(e) {
+    if (e.which == 13) {
+      sendData();
+    }
   });
 
 });
+
+function sendData(){
+  var degree = parseFloat(inputDegree.val()) ;
+  var saturation = parseFloat(inputSaturation.val());
+  var brightness = parseFloat(inputBrightness.val());
+  var range = Math.floor(parseInt(inputRange.val()));
+  var stepDegree = parseFloat(inputStepDegree.val());
+  //var color = new hsl(degree, 'saturation', 'brightness');
+
+  if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
+    var color = new hsl(degree, saturation, brightness);
+    insertTriad(color);
+    if(!isNaN(range) && !isNaN(stepDegree)){
+      $('.complementary').html('');
+      $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + stepDegree +'.</h1>');
+      insertComplementary(color, range, stepDegree);
+    } else {
+      $('.complementary').html('');
+      $('.complementary').append('<h1>Dati inseriti non corretti. Valori di default attivi.</h1>');
+      insertComplementary(color);
+    }
+  } else {
+    alert('Inserisci i dati');
+  }
+
+}
 
 function insertTriad(color){
   var triad = getTriad(color);
@@ -36,9 +60,6 @@ function insertTriad(color){
 function insertComplementary(color, range, degree){
   var complementar = getComplementar(color, range, degree);
 
-  $('.complementary').html('');
-
-  $('.complementary').append('<h1>Complementary colours. Range: ' + range + ', Degree: ' + degree +'.</h1>');
   for (var i = 0; i < complementar.length; i++) {
     $('.complementary').append('<div class="color" style="background: '+ complementar[i].printHsl() +'">'+ complementar[i].getDegree() +'/'+ complementar[i].getSaturation() + '/' + complementar[i].getBrightness() + '<div>')
   }
