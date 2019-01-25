@@ -1,8 +1,10 @@
 var inputDegree = $('#degree');
 var inputSaturation = $('#saturation');
 var inputBrightness = $('#brightness');
-var inputRange = $('#range');
-var inputStepDegree = $('#step-degree');
+var inputRangeComplementary = $('#range');
+var inputStepDegreeComplementary = $('#step-degree');
+var inputRangeAnalogous = $('#range-analogous');
+var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var button = $('#send');
 
 $(document).ready(function(){
@@ -23,8 +25,10 @@ function sendData(){
   var degree = parseFloat(inputDegree.val()) ;
   var saturation = parseFloat(inputSaturation.val());
   var brightness = parseFloat(inputBrightness.val());
-  var range = Math.floor(parseInt(inputRange.val()));
-  var stepDegree = parseFloat(inputStepDegree.val());
+  var rangeComplementary = Math.floor(parseInt(inputRangeComplementary.val()));
+  var stepDegreeComplementary = parseFloat(inputStepDegreeComplementary.val());
+  var rangeAnalogous = Math.floor(parseInt(inputRangeAnalogous.val()));
+  var stepDegreeAnalogous = parseFloat(inputStepDegreeAnalogous.val());
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
@@ -32,8 +36,8 @@ function sendData(){
       insertTriad(color);
       $('.complementary').html('');
       $('.analogous').html('');
-      insertComplementary(color, range, stepDegree);
-      insertAnalogous(color, range, stepDegree);
+      insertComplementary(color, rangeComplementary, stepDegreeComplementary);
+      insertAnalogous(color, rangeAnalogous, stepDegreeAnalogous);
     } catch (error) {
       console.log(error);
     }
