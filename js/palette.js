@@ -105,5 +105,52 @@ function getComplementar(baseColor, numColor, stepDegree){
     arrayColors[index] = new hsl(arrayColors[index], baseColor.getSaturation(), baseColor.getBrightness());
   });
 
+  //inserisco colore base
+  arrayColors.unshift(baseColor);
+
+  return arrayColors;
+}
+
+
+//funzione che genera colori analoghi
+function getAnalogous(baseColor, numColor, stepDegree){
+
+  var step = stepDegree || 20;
+  step = parseFloat(step.toFixed(2));
+  var num = numColor || 3;
+  num = Math.floor(num);
+
+  //se il numero di gradi è superiore a 60 errore
+  if(step * num > 60) throw 'Out of range > 60degree';
+
+  var totalDegree = 360;
+  var firstAnalogous = parseFloat((baseColor.getDegree() + 60).toFixed(2));
+
+  if(isGreaterThan(firstAnalogous, totalDegree)){
+    firstAnalogous = firstAnalogous - totalDegree;
+  }
+  var arrayColors = [firstAnalogous];
+
+  //ciclo che prende colore precedente e inserisce -step
+  for (var k = 0 ; k < (num - 1); k++) {
+    newColor = arrayColors[0] - step;
+    //trasformo in un numero a due decimali
+    newColor = parseFloat(newColor.toFixed(2));
+    //aggiungo colore al primo posto
+    arrayColors.unshift(newColor);
+  }
+
+  //sostituisco i gradi oltre i 360
+  arrayColors.map(function(currentValue, index){
+    if(isGreaterThan(currentValue, totalDegree)){
+      arrayColors[index] = parseFloat((currentValue - totalDegree).toFixed(2));
+    }
+    //sostituisco con nuovo oggetto hsl()
+    arrayColors[index] = new hsl(arrayColors[index], baseColor.getSaturation(), baseColor.getBrightness());
+  });
+
+  //inserisco colore base
+  arrayColors.unshift(baseColor);
+
   return arrayColors;
 }

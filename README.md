@@ -2,7 +2,7 @@
 
 Script che genera diversi tipi di palette a partire da un colore di base
 
-V1.1
+V1.2
 
 ## Funzionalità
 
@@ -25,10 +25,17 @@ Argomenti - colore di base<br/>
 getComplementar(baseColor, numColor, step)
 ```
 Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro<br/>
-Gradi massimi consentiti numColor*step 140<br/>
+Gradi massimi consentiti numColor*step = 140<br/>
+
+### Crea palette di colori analoghi:<br/>
+```
+getAnalogous(baseColor, numColor, step)
+```
+Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro<br/>
+Gradi massimi consentiti numColor*step = 60<br/>
 
 
 ### ToDo color schemes<br/>
-Analogous, Split-Complementary, Tetradic, Square, Monochrome<br/>
+Split-Complementary, Tetradic, Square, Monochrome<br/>
 
-![Color Palette](screen/screen11.png)
+![Color Palette](screen/screen12.png)

@@ -31,7 +31,9 @@ function sendData(){
       var color = new hsl(degree, saturation, brightness);
       insertTriad(color);
       $('.complementary').html('');
+      $('.analogous').html('');
       insertComplementary(color, range, stepDegree);
+      insertAnalogous(color, range, stepDegree);
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +102,37 @@ function insertComplementary(color, range, degree){
     }
 
     $('.complementary').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+function insertAnalogous(color, range, degree){
+  try {
+    var analogous = getAnalogous(color, range, degree);
+    var scheme = $('.template .scheme').clone();
+
+    //se non sono inserti i dati si visualizzano quelli di default
+    if(color && range && degree){
+      scheme.children('.scheme__title').html('Analogous colours.<br>Range: ' + range + ', Degree: ' + degree);
+    } else {
+      scheme.children('.scheme__title').html('Analogous colours. Range: Default, Degree: Default');
+    }
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < analogous.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', analogous[i].printHsl());
+      thisColor.html(analogous[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.analogous').append(scheme);
 
   } catch (error) {
     console.log(error);
