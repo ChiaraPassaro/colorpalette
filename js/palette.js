@@ -5,7 +5,9 @@
 
 function Hsl(degree, saturation, brightness){
   //controllo se i dati sono esatti
-
+  /*console.log(degree);
+  console.log(saturation);
+  console.log(brightness);*/
   if(isNaN(degree)) throw 'Degree in Not a Number';
   if(!isInRange(degree, 0, 360)) throw 'Degree number out of range';
   if(isNaN(saturation)) throw 'Saturation in Not a Number';
@@ -27,7 +29,7 @@ function Hsl(degree, saturation, brightness){
     return _brightness;
   };
   this.printHsl = function() {
-    return 'hsl(' + _degree + ',' + _saturation + '%,' + _brightness + '%)';
+    return 'hsl(' + _degree + ', ' + _saturation + '%, ' + _brightness + '%)';
   };
 
 }
@@ -45,10 +47,27 @@ function setColorPalette(baseColor){
 
   this.complementar = function(numColor, stepDegree){
     if(!isEven(numColor)) throw 'The Colors must be even';
-    return getColors(140, numColor, stepDegree, true);
+    return getColors(140, numColor, stepDegree, 'complementary');
   };
 
-  function getColors(rangeDegree, numColor, stepDegree, complementar){
+  this.analogous = function(typeScheme, numColor, stepDegree){
+    if(!isEven(numColor)) throw 'The Colors must be even';
+    console.log(typeScheme);
+    switch (typeScheme) {
+      case 'allArch':
+        return getColors(120, numColor, stepDegree, 'analogous');
+        break;
+      case 'cold':
+        return getColors(120, numColor, stepDegree, 'analogousCold');
+        break;
+      case 'warm':
+        return getColors(120, numColor, stepDegree, 'analogousWarm');
+        break;
+    }
+
+  };
+
+  function getColors(rangeDegree, numColor, stepDegree, scheme){
     var _rangeDegree = parseFloat(rangeDegree.toFixed(2));
 
     var _num = numColor || 2;
@@ -57,18 +76,33 @@ function setColorPalette(baseColor){
     var _step = stepDegree || 10;
     _step = parseFloat(_step.toFixed(2));
 
-    //se il numero di gradi è superiore a 140 errore
+    //se il numero di gradi è superiore a _rangeDegree  errore
     if(_step * _num > _rangeDegree) throw 'Out of range >' + _rangeDegree;
 
-    var _complementar = complementar || false;
-    var _complementarColor = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
+    var _scheme = scheme || false;
+    var _firstSchemeColor = 0;
 
-
-    if(isGreaterThan(_complementarColor, _totalDegree)){
-      _complementarColor = _complementarColor - _totalDegree;
+    if(_scheme){
+      switch (_scheme) {
+        case 'complementary':
+           _firstSchemeColor = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
+          break;
+        case 'analogous':
+          _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
+          break;
+        case 'analogousCold':
+          _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
+          break;case 'analogousWarm':
+          _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
+          break;
+      }
     }
 
-    var _arrayColors = [_complementarColor];
+    if(isGreaterThan(_firstSchemeColor, _totalDegree)){
+      _firstSchemeColor = _firstSchemeColor - _totalDegree;
+    }
+
+    var _arrayColors = [_firstSchemeColor];
 
     //ciclo che prende colore precedente e inserisce -_step
     for (var i = _num / 2; i >= 1; i--) {
@@ -94,16 +128,32 @@ function setColorPalette(baseColor){
         _arrayColors[index] = parseFloat((currentValue - _totalDegree).toFixed(2));
       }
 
+      if(currentValue < 0){
+        _arrayColors[index] = parseFloat((currentValue + _totalDegree).toFixed(2));
+      }
+
       //sostituisco con nuovo oggetto Hsl()
       _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
     });
 
-    //inserisco colore base
-    _arrayColors.unshift(_baseColor);
+    /*//inserisco colore base
+    _arrayColors.unshift(_baseColor);*/
 
-    //se complementar è false lo elimino
-    if(!complementar){
+    //se scheme è false lo elimino
+    if(!scheme){
       _arrayColors.splice((_num / 2 + 1), 1);
+    }
+
+    if(_scheme == 'analogous'){
+      _arrayColors.reverse();
+    }
+    if(_scheme == 'analogousCold'){
+      _arrayColors.reverse();
+      _arrayColors.splice((_num / 2 + 1), _arrayColors.length - 1);
+    }
+    if(_scheme == 'analogousWarm'){
+      _arrayColors.reverse();
+      _arrayColors.splice(0, (_num / 2));
     }
 
     return _arrayColors;
@@ -111,7 +161,7 @@ function setColorPalette(baseColor){
 }
 
 
-//funzione che genera colori analoghi
+/*//funzione che genera colori analoghi
 function getAnalogous(baseColor, numColor, stepDegree){
 
   if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
@@ -157,4 +207,4 @@ function getAnalogous(baseColor, numColor, stepDegree){
   _arrayColors.unshift(_baseColor);
 
   return _arrayColors;
-}
+}*/

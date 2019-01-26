@@ -5,6 +5,7 @@ var inputRangeComplementary = $('#range');
 var inputStepDegreeComplementary = $('#step-degree');
 var inputRangeAnalogous = $('#range-analogous');
 var inputStepDegreeAnalogous = $('#step-degree-analogous');
+var selectAnalogousType = $('#analogous-type');
 var button = $('#send');
 
 $(document).ready(function(){
@@ -29,6 +30,7 @@ function sendData(){
   var stepDegreeComplementary = parseFloat(inputStepDegreeComplementary.val());
   var rangeAnalogous = Math.floor(parseInt(inputRangeAnalogous.val()));
   var stepDegreeAnalogous = parseFloat(inputStepDegreeAnalogous.val());
+  var analogousType = selectAnalogousType.val();
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
@@ -37,9 +39,9 @@ function sendData(){
 
       insertTriad(color, palette);
       $('.complementary').html('');
-      // $('.analogous').html('');
+      $('.analogous').html('');
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
-      // insertAnalogous(color, rangeAnalogous, stepDegreeAnalogous);
+       insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
     } catch (error) {
       console.log(error);
     }
@@ -115,9 +117,10 @@ function insertComplementary(color, palette,  range, degree){
 }
 
 
-function insertAnalogous(color, range, degree){
+function insertAnalogous(color, palette,  range, degree, analogousType){
   try {
-    var analogous = getAnalogous(color, range, degree);
+    var analogous = palette.analogous(analogousType, range, degree);
+
     var scheme = $('.template .scheme').clone();
 
     //se non sono inserti i dati si visualizzano quelli di default
