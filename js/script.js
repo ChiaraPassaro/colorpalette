@@ -36,9 +36,9 @@ function sendData(){
       var palette = new setColorPalette(color);
 
       insertTriad(color, palette);
-      // $('.complementary').html('');
+      $('.complementary').html('');
       // $('.analogous').html('');
-      // insertComplementary(color, rangeComplementary, stepDegreeComplementary);
+       insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
       // insertAnalogous(color, rangeAnalogous, stepDegreeAnalogous);
     } catch (error) {
       console.log(error);
@@ -84,9 +84,9 @@ function insertTriad(color, palette){
   }
 }
 
-function insertComplementary(color, range, degree){
+function insertComplementary(color, palette,  range, degree){
   try {
-    var complementar = getComplementar(color, range, degree);
+    var complementar = palette.complementar(range, degree);
     var scheme = $('.template .scheme').clone();
 
     //se non sono inserti i dati si visualizzano quelli di default

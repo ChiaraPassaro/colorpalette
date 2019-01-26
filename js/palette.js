@@ -1,4 +1,4 @@
-Hsl//************************//
+//************************//
 //********Funzioni********//
 //************************//
 
@@ -41,7 +41,12 @@ function setColorPalette(baseColor){
 
   this.triad = function(){
     return getColors(240, 2, 60);
-  }
+  };
+
+  this.complementar = function(numColor, stepDegree){
+    if(!isEven(numColor)) throw 'The Colors must be even';
+    return getColors(140, numColor, stepDegree, true);
+  };
 
   function getColors(rangeDegree, numColor, stepDegree, complementar){
     var _rangeDegree = parseFloat(rangeDegree.toFixed(2));
@@ -52,6 +57,9 @@ function setColorPalette(baseColor){
     var _step = stepDegree || 10;
     _step = parseFloat(_step.toFixed(2));
 
+    //se il numero di gradi è superiore a 140 errore
+    if(_step * _num > _rangeDegree) throw 'Out of range >' + _rangeDegree;
+
     var _complementar = complementar || false;
     var _complementarColor = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
 
@@ -59,6 +67,7 @@ function setColorPalette(baseColor){
     if(isGreaterThan(_complementarColor, _totalDegree)){
       _complementarColor = _complementarColor - _totalDegree;
     }
+
     var _arrayColors = [_complementarColor];
 
     //ciclo che prende colore precedente e inserisce -_step
@@ -84,7 +93,6 @@ function setColorPalette(baseColor){
       if(isGreaterThan(currentValue, _totalDegree)){
         _arrayColors[index] = parseFloat((currentValue - _totalDegree).toFixed(2));
       }
-      console.log(_arrayColors);
 
       //sostituisco con nuovo oggetto Hsl()
       _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
@@ -100,65 +108,6 @@ function setColorPalette(baseColor){
 
     return _arrayColors;
   }
-}
-
-
-
-//funzione che richiama un range di colori complementari
-//se il numero di colori e gli step non sono specificati default 3 colori e 10 step
-function getComplementar(baseColor, numColor, stepDegree){
-  if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
-
-  var _baseColor = baseColor;
-  var _totalDegree = 360;
-
-  var _step = stepDegree || 10;
-  _step = parseFloat(_step.toFixed(2));
-
-  var _num = numColor || 3;
-  _num = Math.floor(_num);
-
-  //se il numero di gradi è superiore a 140 errore
-  if(_step * _num > 140) throw 'Out of range > 140degree';
-
-  var _firstComplementar = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
-
-  if(isGreaterThan(_firstComplementar, _totalDegree)){
-    _firstComplementar = _firstComplementar - _totalDegree;
-  }
-  var _arrayColors = [_firstComplementar];
-
-  //ciclo che prende colore precedente e inserisce -_step
-  for (var i = _num / 2; i >= 1; i--) {
-    var _newColor = _arrayColors[_arrayColors.length - 1] - _step;
-    //trasformo in un numero a due decimali
-    _newColor = parseFloat(_newColor.toFixed(2));
-    //aggiungo colore all'ultimo posto
-    _arrayColors.push(_newColor);
-  }
-
-  //ciclo che prende colore precedente e inserisce +_step
-  for (var k = 0 ; k < (_num / 2 - 1); k++) {
-    _newColor = _arrayColors[0] + _step;
-    //trasformo in un numero a due decimali
-    _newColor = parseFloat(_newColor.toFixed(2));
-    //aggiungo colore al primo posto
-    _arrayColors.unshift(_newColor);
-  }
-
-  //sostituisco i gradi oltre i 360
-  _arrayColors.map(function(currentValue, index){
-    if(isGreaterThan(currentValue, _totalDegree)){
-      _arrayColors[index] = parseFloat((currentValue - _totalDegree).toFixed(2));
-    }
-    //sostituisco con nuovo oggetto Hsl()
-    _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
-  });
-
-  //inserisco colore base
-  _arrayColors.unshift(_baseColor);
-
-  return _arrayColors;
 }
 
 
