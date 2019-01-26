@@ -35,8 +35,8 @@ function sendData(){
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
       var color = new Hsl(degree, saturation, brightness);
-      var palette = new setColorPalette(color);
-
+      var palette = new SetColorPalette(color);
+      //console.log(palette.basecolor.printHsl());
       insertTriad(color, palette);
       $('.complementary').html('');
       $('.analogous').html('');

@@ -34,25 +34,32 @@ function Hsl(degree, saturation, brightness){
 
 }
 
-function setColorPalette(baseColor){
+function SetColorPalette(baseColor){
   if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
 
   var _totalDegree = 360;
   var _baseColor = baseColor;
 
+  //salvo colore base
+  this.basecolor = baseColor;
 
+
+  //funzione che crea triade
   this.triad = function(){
     return getColors(240, 2, 60);
   };
 
+  //funzione che crea complementari
   this.complementar = function(numColor, stepDegree){
     if(!isEven(numColor)) throw 'The Colors must be even';
     return getColors(140, numColor, stepDegree, 'complementary');
   };
 
+  //funzione che crea analoghi
   this.analogous = function(typeScheme, numColor, stepDegree){
     if(!isEven(numColor)) throw 'The Colors must be even';
-    console.log(typeScheme);
+    //console.log(typeScheme);
+
     switch (typeScheme) {
       case 'allArch':
         return getColors(120, numColor, stepDegree, 'analogous');
@@ -67,6 +74,7 @@ function setColorPalette(baseColor){
 
   };
 
+  //funzione che crea colori
   function getColors(rangeDegree, numColor, stepDegree, scheme){
     var _rangeDegree = parseFloat(rangeDegree.toFixed(2));
 

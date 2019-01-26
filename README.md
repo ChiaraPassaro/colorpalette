@@ -2,40 +2,78 @@
 
 Script che genera diversi tipi di palette a partire da un colore di base
 
-V1.2
+V1.3
 
 ## Funzionalità
 
-### Crea colore hsl:<br/>
+### Crea colore Hsl:<br/>
 ```
-hsl(degree, saturation, brightness)
+var baseColor = new Hsl(degree, saturation, brightness)
 ```
 
-Argomenti - gradi (1-360), saturazione (1-100), luminosità (1-100)<br/>
+#####Argomenti: <br/>
+Gradi (1-360)<br/>
+Saturazione (1-100)<br/> 
+Luminosità (1-100)<br/>
 
+#####Ritorna:
+```
+baseColor.getDegree() -> number
+baseColor.getSaturation() -> number
+baseColor.getBrightness() -> number
+baseColor.printHsl() -> string hsl(degre, saturation% , brightness%)
+
+```
+
+### Crea palette SetColorPalette:<br/>
+```
+var palette = new SetColorPalette(baseColor)
+```
+#####Argomenti: <br/>
+Colore di base
+
+#####Ritorna:
+```
+palette.basecolor -> obj Hsl()
+```
 ### Crea palette Triadica:<br/>
+```
+palette.triad()
+```
+#####Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
-```
-getTriad(baseColor)
-```
-Argomenti - colore di base<br/>
 
 ### Crea palette di colori complementari:<br/>
 ```
-getComplementar(baseColor, numColor, step)
+palette.complementar(numColor, stepDegree)
 ```
-Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro<br/>
+#####Argomenti:<br/>
+Numero di colori desiderati - numero pari <br/>
+Step in gradi tra un colore e l'altro<br/>
 Gradi massimi consentiti numColor*step = 140<br/>
+#####Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
 ### Crea palette di colori analoghi:<br/>
 ```
-getAnalogous(baseColor, numColor, step)
+palette.analogous(typeScheme, numColor, stepDegree)
 ```
-Argomenti - colore di base, numero di colori desiderati, step in gradi tra un colore e l'altro<br/>
+#####Argomenti:<br/>
+Tipo di schema: 'allArch', 'cold', 'warm'<br/> 
+Numero di colori desiderati - numero pari<br/>
+Step in gradi tra un colore e l'altro<br/>
 Gradi massimi consentiti numColor*step = 60<br/>
-
+#####Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
 ### ToDo color schemes<br/>
-Split-Complementary, Tetradic, Square, Monochrome<br/>
+Split-Complementary, Tetradic, Square, Monochrome, Random Colors whith dominant color<br/>
 
-![Color Palette](screen/screen12.png)
+![Color Palette](screen/screen13.png)
