@@ -32,12 +32,14 @@ function sendData(){
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
-      var color = new hsl(degree, saturation, brightness);
-      insertTriad(color);
-      $('.complementary').html('');
-      $('.analogous').html('');
-      insertComplementary(color, rangeComplementary, stepDegreeComplementary);
-      insertAnalogous(color, rangeAnalogous, stepDegreeAnalogous);
+      var color = new Hsl(degree, saturation, brightness);
+      var palette = new setColorPalette(color);
+
+      insertTriad(color, palette);
+      // $('.complementary').html('');
+      // $('.analogous').html('');
+      // insertComplementary(color, rangeComplementary, stepDegreeComplementary);
+      // insertAnalogous(color, rangeAnalogous, stepDegreeAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +49,7 @@ function sendData(){
 
 }
 
-function insertTriad(color){
+function insertTriad(color, palette){
   $('.basecolor').html('');
   var scheme = $('.template .scheme').clone();
   scheme.children('.scheme__title').html('Your colour');
@@ -59,8 +61,8 @@ function insertTriad(color){
   $('.basecolor').append(scheme);
 
   try {
-
-    var triad = getTriad(color);
+    // var triad = getTriad(color);
+    var triad = palette.triad();
     var scheme = $('.template .scheme').clone();
     scheme.children('.scheme__title').html('Triad colours');
 
