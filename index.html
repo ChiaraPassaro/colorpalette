@@ -9,19 +9,30 @@
   </head>
   <body>
     <div class="insert-yourcolor row">
-      <input type="text" id="degree" placeholder="Insert Degree Value">
-      <input type="text" id="saturation" placeholder="Insert saturation Value">
-      <input type="text" id="brightness" placeholder="Insert Brightness Value">
-      <input type="text" id="range" placeholder="Insert range for complementary">
-      <input type="text" id="step-degree" placeholder="Insert degree for complementary">
-      <input type="text" id="range-analogous" placeholder="Insert range for analogous">
-      <input type="text" id="step-degree-analogous" placeholder="Insert degree for analogous">
-      <select id="analogous-type">
-        <option value="allArch">Cold and Warm</option>
-        <option value="cold">Cold</option>
-        <option value="warm">Warm</option>
-      </select>
-      <button type="button" name="send" id="send">send</button>
+      <p>
+        <label>Add value Base Color</label>
+        <input type="text" id="degree" placeholder="Insert Degree Value" size="30">
+        <input type="text" id="saturation" placeholder="Insert saturation Value" size="30">
+        <input type="text" id="brightness" placeholder="Insert Brightness Value" size="30">
+      </p>
+      <p>
+        <label>Complementary setup</label>
+        <input type="text" id="range" placeholder="Insert number color - even value" size="30">
+        <input type="text" id="step-degree" placeholder="Insert degree" size="30">
+      </p>
+      <p>
+        <label>Analogous setup</label>
+        <input type="text" id="range-analogous" placeholder="Insert number color - even value" size="30">
+        <input type="text" id="step-degree-analogous" placeholder="Insert degree" size="30">
+        <select id="analogous-type">
+          <option value="allArch">Cold and Warm</option>
+          <option value="cold">Cold</option>
+          <option value="warm">Warm</option>
+        </select>
+      </p>
+      <p>
+        <button type="button" name="send" id="send">send</button>
+      </p>
     </div>
 
     <div class="results">
