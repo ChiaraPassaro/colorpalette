@@ -41,7 +41,7 @@ function SetColorPalette(baseColor){
   var _baseColor = baseColor;
 
   //salvo colore base
-  this.basecolor = baseColor;
+  this.basecolor = _baseColor;
 
 
   //funzione che crea triade

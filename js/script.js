@@ -36,7 +36,7 @@ function sendData(){
     try {
       var color = new Hsl(degree, saturation, brightness);
       var palette = new SetColorPalette(color);
-      //console.log(palette.basecolor.printHsl());
+      console.log(palette.basecolor.printHsl());
       insertTriad(color, palette);
       $('.complementary').html('');
       $('.analogous').html('');
