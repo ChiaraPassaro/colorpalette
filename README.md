@@ -11,12 +11,12 @@ V1.3
 var baseColor = new Hsl(degree, saturation, brightness)
 ```
 
-#####Argomenti: <br/>
+##### Argomenti: <br/>
 Gradi (1-360)<br/>
 Saturazione (1-100)<br/> 
 Luminosità (1-100)<br/>
 
-#####Ritorna:
+##### Ritorna:
 ```
 baseColor.getDegree() -> number
 baseColor.getSaturation() -> number
@@ -29,10 +29,10 @@ baseColor.printHsl() -> string hsl(degre, saturation% , brightness%)
 ```
 var palette = new SetColorPalette(baseColor)
 ```
-#####Argomenti: <br/>
+##### Argomenti: <br/>
 Colore di base
 
-#####Ritorna:
+##### Ritorna:
 ```
 palette.basecolor -> obj Hsl()
 ```
@@ -40,7 +40,7 @@ palette.basecolor -> obj Hsl()
 ```
 palette.triad()
 ```
-#####Ritorna:
+##### Ritorna:
 ```
 Array [obj Hsl(), obj Hsl(), ...]
 ```
@@ -50,11 +50,11 @@ Array [obj Hsl(), obj Hsl(), ...]
 ```
 palette.complementar(numColor, stepDegree)
 ```
-#####Argomenti:<br/>
+##### Argomenti:<br/>
 Numero di colori desiderati - numero pari <br/>
 Step in gradi tra un colore e l'altro<br/>
 Gradi massimi consentiti numColor*step = 140<br/>
-#####Ritorna:
+##### Ritorna:
 ```
 Array [obj Hsl(), obj Hsl(), ...]
 ```
@@ -63,12 +63,12 @@ Array [obj Hsl(), obj Hsl(), ...]
 ```
 palette.analogous(typeScheme, numColor, stepDegree)
 ```
-#####Argomenti:<br/>
+##### Argomenti:<br/>
 Tipo di schema: 'allArch', 'cold', 'warm'<br/> 
 Numero di colori desiderati - numero pari<br/>
 Step in gradi tra un colore e l'altro<br/>
 Gradi massimi consentiti numColor*step = 60<br/>
-#####Ritorna:
+##### Ritorna:
 ```
 Array [obj Hsl(), obj Hsl(), ...]
 ```
