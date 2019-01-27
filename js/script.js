@@ -36,11 +36,13 @@ function sendData(){
     try {
       var color = new Hsl(degree, saturation, brightness);
       var palette = new SetColorPalette(color);
-      console.log(palette.basecolor.printHsl());
+      //console.log(palette.basecolor.printHsl());
       insertTriad(color, palette);
       $('.complementary').html('');
+      $('.split-complementary').html('');
       $('.analogous').html('');
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
+       insertSplitComplementary(color, palette);
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
     } catch (error) {
       console.log(error);
@@ -110,6 +112,30 @@ function insertComplementary(color, palette,  range, degree){
     }
 
     $('.complementary').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function insertSplitComplementary(color, palette){
+  try {
+    var splitComplementar = palette.splitComplementar();
+    var scheme = $('.template .scheme').clone();
+    scheme.children('.scheme__title').html('Split Complementary colours.');
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < splitComplementar.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', splitComplementar[i].printHsl());
+      thisColor.html(splitComplementar[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.split-complementary').append(scheme);
 
   } catch (error) {
     console.log(error);
