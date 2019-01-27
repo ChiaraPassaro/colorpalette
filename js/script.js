@@ -7,6 +7,10 @@ var inputRangeAnalogous = $('#range-analogous');
 var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var selectAnalogousType = $('#analogous-type');
 var button = $('#send');
+var canvasTriad = $('#doughnut__canvas-triad');
+var canvasComplementary = $('#doughnut__canvas-complementar');
+var canvasSplit = $('#doughnut__canvas-split');
+var canvasAnalogous = $('#doughnut__canvas-analogous');
 
 $(document).ready(function(){
 
@@ -42,9 +46,12 @@ function sendData(){
       $('.split-complementary').html('');
       $('.analogous').html('');
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
+       triadWheel(palette, canvasTriad);
+       complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
        insertSplitComplementary(color, palette);
+       splitComplementarWheel(palette, canvasSplit);
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
-      getChart();
+       analogousWheel(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -175,20 +182,52 @@ function insertAnalogous(color, palette,  range, degree, analogousType){
   }
 }
 
-function getChart() {
-  var canvas = doughnut__canvas;
+function triadWheel(palette, canvas) {
+  var triad = palette.triad();
+  var basecolor = palette.getBasecolor();
+  triad.push(basecolor);
+  getChart(triad, canvas, 30, 'Triad');
+}
+
+function complementarWheel(palette, range, step, canvas) {
+  var complementar = palette.complementar(range, step);
+  var basecolor = palette.getBasecolor();
+  complementar.push(basecolor);
+  getChart(complementar, canvas, step, 'Complementary Range');
+}
+
+function splitComplementarWheel(palette, canvas) {
+  var splitComplementar = palette.splitComplementar();
+  var basecolor = palette.getBasecolor();
+  splitComplementar.push(basecolor);
+  getChart(splitComplementar, canvas, 30, 'Split Complementary');
+}
+
+function analogousWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
+  var analogous = palette.analogous(typeScheme, numColor, stepDegree);
+  var basecolor = palette.getBasecolor();
+  analogous.push(basecolor);
+  getChart(analogous, canvas, 30, 'Analogous');
+}
+
+function getChart(palette, canvas, step, title) {
+
   var degrees = [];
-
-  for (var i = 0; i < 360 ; i++) {
-    degrees.push(1);
-  }
-
   var colorsLabel = [];
+
   for (var i = 0; i < 360 ; i++) {
+  //tutti i gradi hanno valore 1 per comparire nella chart
+    degrees.push(1);
+    //tutti i gradi hanno il colore di background ad opacità 0.2
     colorsLabel.push('hsl('+ i + ', 50%, 50%, 0.2)');
   }
 
-  colorsLabel[0] = 'hsl(0, 50%, 50%, 1)';
+  //inserisco i gradi della palette con dato uguale allo step usato per generare la palette
+  for (var i = 0; i < palette.length; i++) {
+    var degree = palette[i].getDegree();
+    degrees[degree] =  step;
+    colorsLabel[degree] = palette[i].printHsl();
+  }
 
   var data = {
     datasets: [{
@@ -196,13 +235,22 @@ function getChart() {
       backgroundColor: colorsLabel,
       borderWidth: 0
     }],
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    //labels: colorsLabel
+    labels: colorsLabel
   };
 
-  var myDoughnutChart = new Chart(canvas, {
+  var thisChart = new Chart(canvas, {
     type: 'doughnut',
     data: data,
-    //ptions: options
+    options:
+      {
+        title: {
+          display: true,
+          text: title
+        },
+        legend: {
+          display: false
+        }
+        //rotation: 2 * Math.PI
+      }
   });
 }

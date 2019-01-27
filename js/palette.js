@@ -42,7 +42,7 @@ function SetColorPalette(baseColor) {
 
     //ritorna stringa con colore base
     this.getBasecolor = function (){
-     return _baseColor.printHsl();
+     return _baseColor;
     };
 
     //update del colore base
