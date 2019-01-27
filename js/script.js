@@ -44,6 +44,7 @@ function sendData(){
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
        insertSplitComplementary(color, palette);
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
+      getChart();
     } catch (error) {
       console.log(error);
     }
@@ -172,4 +173,36 @@ function insertAnalogous(color, palette,  range, degree, analogousType){
   } catch (error) {
     console.log(error);
   }
+}
+
+function getChart() {
+  var canvas = doughnut__canvas;
+  var degrees = [];
+
+  for (var i = 0; i < 360 ; i++) {
+    degrees.push(1);
+  }
+
+  var colorsLabel = [];
+  for (var i = 0; i < 360 ; i++) {
+    colorsLabel.push('hsl('+ i + ', 50%, 50%, 0.2)');
+  }
+
+  colorsLabel[0] = 'hsl(0, 50%, 50%, 1)';
+
+  var data = {
+    datasets: [{
+      data: degrees,
+      backgroundColor: colorsLabel,
+      borderWidth: 0
+    }],
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    //labels: colorsLabel
+  };
+
+  var myDoughnutChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: data,
+    //ptions: options
+  });
 }
