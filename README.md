@@ -59,6 +59,15 @@ Gradi massimi consentiti numColor*step = 140<br/>
 Array [obj Hsl(), obj Hsl(), ...]
 ```
 
+### Crea palette di colori complementari divergenti:<br/>
+```
+palette.splitComplementar()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl()]
+```
+
 ### Crea palette di colori analoghi:<br/>
 ```
 palette.analogous(typeScheme, numColor, stepDegree)
@@ -74,6 +83,6 @@ Array [obj Hsl(), obj Hsl(), ...]
 ```
 
 ### ToDo color schemes<br/>
-Split-Complementary, Tetradic, Square, Monochrome, Random Colors whith dominant color<br/>
+Tetradic, Square, Monochrome, Random Colors whith dominant color<br/>
 
 ![Color Palette](screen/screen13.png)
