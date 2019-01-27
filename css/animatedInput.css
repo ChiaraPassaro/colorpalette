@@ -1,0 +1,115 @@
+
+.input_wrapper {
+	display: flex;
+	align-items: center;
+	position: relative;
+	width: 200px;
+	height: 45px;
+	border: 1px solid #dcdcdc;
+}
+
+.huge_input {
+	font-size: 16px;
+	margin: 0 16px;
+	color: #333333;
+	border: none;
+	outline: none;
+	/*consente di mostrare il finto placeholder che si animerà*/
+	background-color: transparent;
+}
+
+.huge_input_placeholder {
+	position: absolute;
+	top: 14px;
+	z-index: -1;
+	left: 16px;
+	font-size: 16px;
+	padding: 0;
+	animation-duration: .2s;
+	animation-timing-function: linear;
+	animation-fill-mode: forwards;
+	color: lightgray;
+	background-color: transparent;
+}
+
+@keyframes input_box_form_anim {
+	0% {
+		top: 14px;
+		font-size: 16px;
+		color: lightgray;
+		padding: 0;
+		background-color: transparent;
+	}
+
+	100% {
+		top: -8px;
+		font-size: 12px;
+		color: #333333;
+		padding: 0 2px;
+		background-color: #ffffff;
+		z-index: 1;
+	}
+}
+
+@keyframes input_box_form_anim_revert {
+	0% {
+		top: -8px;
+		font-size: 12px;
+		color: #333333;
+		padding: 0 2px;
+		background-color: #ffffff;
+		z-index: 1;
+	}
+
+	100% {
+		top: 14px;
+		padding: 0;
+		font-size: 16px;
+		color: lightgray;
+		background-color: transparent;
+		z-index: -1;
+	}
+}
+
+.input_wrapper_bad,
+.input_wrapper_good {
+	top: -8px;
+	z-index: 1;
+	font-size: 12px;
+	padding: 0 2px;
+	color: #333333;
+	background-color: #ffffff;
+}
+
+.input_wrapper_good {
+	color: #333333;
+}
+
+.input_wrapper_bad {
+	color: #FA7751;
+}
+
+.huge_input_error_arrow {
+	position: absolute;
+	bottom: -5px;
+	left: 15px;
+	width: 0;
+	height: 0;
+	border-top: 5px solid #FA7751;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+}
+
+.huge_input_error_description {
+	position: absolute;
+	bottom: -19px;
+	left: 0;
+	font-size: 12px;
+	font-weight: 300;
+	color: #FA7751;
+}
+
+.huge_input_error_arrow,
+.huge_input_error_description {
+	display: none;
+}
