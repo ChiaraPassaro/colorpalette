@@ -1,3 +1,6 @@
+var $ = require("jquery");
+var Chart = require('chart.js');
+
 var inputDegree = $('#degree');
 var inputSaturation = $('#saturation');
 var inputBrightness = $('#brightness');

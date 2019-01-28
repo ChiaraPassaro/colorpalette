@@ -1,13 +1,13 @@
+
 //************************//
 //********Funzioni********//
 //************************//
 
-
 function Hsl(degree, saturation, brightness) {
     //controllo se i dati sono esatti
-    console.log(degree);
+ /*   console.log(degree);
     console.log(saturation);
-    console.log(brightness);
+    console.log(brightness);*/
     if (isNaN(degree)) throw 'Degree in Not a Number';
     if (!isInRange(degree, 0, 360)) throw 'Degree number out of range';
     if (isNaN(saturation)) throw 'Saturation in Not a Number';

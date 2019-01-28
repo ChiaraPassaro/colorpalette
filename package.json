@@ -1,0 +1,35 @@
+{
+  "name": "palettecolori",
+  "version": "1.3.0",
+  "description": "Script che genera diversi tipi di palette a partire da un colore di base",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChiaraPassaro/colorpalette.git"
+  },
+  "keywords": [],
+  "author": "Chiara Passaro, Emanuele Mazzante",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChiaraPassaro/colorpalette/issues"
+  },
+  "homepage": "https://github.com/ChiaraPassaro/colorpalette#readme",
+  "devDependencies": {
+    "laravel-mix": "^4.0.14",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.16.1",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.22"
+  },
+  "dependencies": {
+    "chart.js": "^2.7.3"
+  }
+}
