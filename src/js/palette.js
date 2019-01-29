@@ -32,6 +32,12 @@ function Hsl(degree, saturation, brightness) {
         return 'hsl(' + _degree + ', ' + _saturation + '%, ' + _brightness + '%)';
     };
 
+    this.setBrightness = function (newBrightness) {
+        if (isNaN(newBrightness)) throw 'Brightness in Not a Number';
+        if (!isInRange(newBrightness, 0, 360)) throw 'Brightness number out of range';
+        _brightness = parseFloat(newBrightness.toFixed(2));
+    };
+
 }
 
 function SetColorPalette(baseColor) {
