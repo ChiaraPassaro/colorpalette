@@ -1,3 +1,4 @@
+import * as Utilities from './utilities.js';
 
 //************************//
 //********Funzioni********//
@@ -9,11 +10,11 @@ function Hsl(degree, saturation, brightness) {
     console.log(saturation);
     console.log(brightness);*/
     if (isNaN(degree)) throw 'Degree in Not a Number';
-    if (!isInRange(degree, 0, 360)) throw 'Degree number out of range';
+    if (!Utilities.isInRange(degree, 0, 360)) throw 'Degree number out of range';
     if (isNaN(saturation)) throw 'Saturation in Not a Number';
-    if (!isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
+    if (!Utilities.isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
     if (isNaN(brightness)) throw 'Brightness in Not a Number';
-    if (!isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
+    if (!Utilities.isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
 
     var _degree = parseFloat(degree.toFixed(2));
     var _saturation = parseFloat(saturation.toFixed(2));
@@ -34,10 +35,10 @@ function Hsl(degree, saturation, brightness) {
 
     this.setBrightness = function (newBrightness) {
         if (isNaN(newBrightness)) throw 'Brightness in Not a Number';
-        if (!isInRange(newBrightness, 0, 360)) throw 'Brightness number out of range';
+        if (!Utilities.isInRange(newBrightness, 0, 360)) throw 'Brightness number out of range';
         _brightness = parseFloat(newBrightness.toFixed(2));
     };
-
+    return this;
 }
 
 function SetColorPalette(baseColor) {
@@ -64,13 +65,13 @@ function SetColorPalette(baseColor) {
 
     //funzione che crea complementari
     this.complementar = function (numColor, stepDegree) {
-        if (!isEven(numColor)) throw 'The Colors must be even';
+        if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
         return getColors(140, numColor, stepDegree, 'complementary');
     };
 
     //funzione che crea analoghi
     this.analogous = function (typeScheme, numColor, stepDegree) {
-        if (!isEven(numColor)) throw 'The Colors must be even';
+        if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
         //console.log(typeScheme);
 
         switch (typeScheme) {
@@ -123,7 +124,7 @@ function SetColorPalette(baseColor) {
             }
         }
 
-        if (isGreaterThan(_firstSchemeColor, _totalDegree)) {
+        if (Utilities.isGreaterThan(_firstSchemeColor, _totalDegree)) {
             _firstSchemeColor = _firstSchemeColor - _totalDegree;
         }
 
@@ -149,7 +150,7 @@ function SetColorPalette(baseColor) {
 
         //sostituisco i gradi oltre i 360
         _arrayColors.map(function (currentValue, index) {
-            if (isGreaterThan(currentValue, _totalDegree)) {
+            if (Utilities.isGreaterThan(currentValue, _totalDegree)) {
                 _arrayColors[index] = parseFloat((currentValue - _totalDegree).toFixed(2));
             }
 
@@ -187,4 +188,7 @@ function SetColorPalette(baseColor) {
 
         return _arrayColors;
     }
+    return this;
 }
+
+export {Hsl, SetColorPalette};

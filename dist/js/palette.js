@@ -1,29 +1,106 @@
-// Utilities
-function isGreaterThan(num, max) {
-  if (num > max) {
-    return true;
-  }
-}
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ({
 
-function isInRange(num, min, max) {
-  if (num >= min && num <= max) {
-    return true;
-  }
-}
+/***/ "./src/js/palette.js":
+/*!***************************!*\
+  !*** ./src/js/palette.js ***!
+  \***************************/
+/*! exports provided: Hsl, SetColorPalette */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-function isEven(number) {
-  var even = false;
-  var number = number;
-
-  if (number % 2 == 0) {
-    even = true;
-  }
-
-  return even;
-} //************************//
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Hsl", function() { return Hsl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetColorPalette", function() { return SetColorPalette; });
+/* harmony import */ var _utilities_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilities.js */ "./src/js/utilities.js");
+ //************************//
 //********Funzioni********//
 //************************//
-
 
 function Hsl(degree, saturation, brightness) {
   //controllo se i dati sono esatti
@@ -32,11 +109,11 @@ function Hsl(degree, saturation, brightness) {
      console.log(saturation);
      console.log(brightness);*/
   if (isNaN(degree)) throw 'Degree in Not a Number';
-  if (!isInRange(degree, 0, 360)) throw 'Degree number out of range';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](degree, 0, 360)) throw 'Degree number out of range';
   if (isNaN(saturation)) throw 'Saturation in Not a Number';
-  if (!isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](saturation, 0, 360)) throw 'Saturation number out of range';
   if (isNaN(brightness)) throw 'Brightness in Not a Number';
-  if (!isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](brightness, 0, 360)) throw 'Brightness number out of range';
 
   var _degree = parseFloat(degree.toFixed(2));
 
@@ -59,6 +136,14 @@ function Hsl(degree, saturation, brightness) {
   this.printHsl = function () {
     return 'hsl(' + _degree + ', ' + _saturation + '%, ' + _brightness + '%)';
   };
+
+  this.setBrightness = function (newBrightness) {
+    if (isNaN(newBrightness)) throw 'Brightness in Not a Number';
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](newBrightness, 0, 360)) throw 'Brightness number out of range';
+    _brightness = parseFloat(newBrightness.toFixed(2));
+  };
+
+  return this;
 }
 
 function SetColorPalette(baseColor) {
@@ -83,13 +168,13 @@ function SetColorPalette(baseColor) {
 
 
   this.complementar = function (numColor, stepDegree) {
-    if (!isEven(numColor)) throw 'The Colors must be even';
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even';
     return getColors(140, numColor, stepDegree, 'complementary');
   }; //funzione che crea analoghi
 
 
   this.analogous = function (typeScheme, numColor, stepDegree) {
-    if (!isEven(numColor)) throw 'The Colors must be even'; //console.log(typeScheme);
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even'; //console.log(typeScheme);
 
     switch (typeScheme) {
       case 'allArch':
@@ -147,7 +232,7 @@ function SetColorPalette(baseColor) {
       }
     }
 
-    if (isGreaterThan(_firstSchemeColor, _totalDegree)) {
+    if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_firstSchemeColor, _totalDegree)) {
       _firstSchemeColor = _firstSchemeColor - _totalDegree;
     }
 
@@ -173,7 +258,7 @@ function SetColorPalette(baseColor) {
 
 
     _arrayColors.map(function (currentValue, index) {
-      if (isGreaterThan(currentValue, _totalDegree)) {
+      if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](currentValue, _totalDegree)) {
         _arrayColors[index] = parseFloat((currentValue - _totalDegree).toFixed(2));
       } //se il numero è negativo  aggiungo  360gradi
 
@@ -215,4 +300,76 @@ function SetColorPalette(baseColor) {
 
     return _arrayColors;
   }
+
+  return this;
 }
+
+
+
+/***/ }),
+
+/***/ "./src/js/utilities.js":
+/*!*****************************!*\
+  !*** ./src/js/utilities.js ***!
+  \*****************************/
+/*! exports provided: isGreaterThan, isEven, isInRange */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isGreaterThan", function() { return isGreaterThan; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEven", function() { return isEven; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInRange", function() { return isInRange; });
+// Utilities
+function isGreaterThan(num, max) {
+  if (num > max) {
+    return true;
+  }
+}
+
+function isInRange(num, min, max) {
+  if (num >= min && num <= max) {
+    return true;
+  }
+}
+
+function isEven(number) {
+  var even = false;
+  var number = number;
+
+  if (number % 2 == 0) {
+    even = true;
+  }
+
+  return even;
+}
+
+
+
+/***/ }),
+
+/***/ "./src/scss/style.scss":
+/*!*****************************!*\
+  !*** ./src/scss/style.scss ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!*******************************************************!*\
+  !*** multi ./src/js/palette.js ./src/scss/style.scss ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! /home/kja/sites/www/html/palettecolori/src/js/palette.js */"./src/js/palette.js");
+module.exports = __webpack_require__(/*! /home/kja/sites/www/html/palettecolori/src/scss/style.scss */"./src/scss/style.scss");
+
+
+/***/ })
+
+/******/ });

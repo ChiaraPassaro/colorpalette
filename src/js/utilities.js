@@ -21,3 +21,5 @@ function isEven(number) {
     }
     return even;
 }
+
+export {isGreaterThan, isEven, isInRange};

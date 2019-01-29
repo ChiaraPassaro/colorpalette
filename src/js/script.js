@@ -1,5 +1,6 @@
 var $ = require("jquery");
 var Chart = require('chart.js');
+import * as ColorPalette from './palette.js';
 
 var inputDegree = $('#degree');
 var inputSaturation = $('#saturation');
@@ -41,8 +42,8 @@ function sendData(){
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
-      var color = new Hsl(degree, saturation, brightness);
-      var palette = new SetColorPalette(color);
+      var color = new ColorPalette.Hsl(degree, saturation, brightness);
+      var palette = new ColorPalette.SetColorPalette(color);
       //console.log(palette.basecolor.printHsl());
       insertTriad(color, palette);
       $('.complementary').html('');
