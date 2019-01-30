@@ -21,6 +21,9 @@ Luminosità (1-100)<br/>
 baseColor.getDegree() -> number
 baseColor.getSaturation() -> number
 baseColor.getBrightness() -> number
+baseColor.setDegree(number) 
+baseColor.setSaturation(number)
+baseColor.setBrightness(number)
 baseColor.printHsl() -> string hsl(degre, saturation% , brightness%)
 
 ```

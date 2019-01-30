@@ -6,15 +6,12 @@ import * as Utilities from './utilities.js';
 
 function Hsl(degree, saturation, brightness) {
     //controllo se i dati sono esatti
- /*   console.log(degree);
-    console.log(saturation);
-    console.log(brightness);*/
     if (isNaN(degree)) throw 'Degree in Not a Number';
     if (!Utilities.isInRange(degree, 0, 360)) throw 'Degree number out of range';
     if (isNaN(saturation)) throw 'Saturation in Not a Number';
-    if (!Utilities.isInRange(saturation, 0, 360)) throw 'Saturation number out of range';
+    if (!Utilities.isInRange(saturation, 0, 100)) throw 'Saturation number out of range';
     if (isNaN(brightness)) throw 'Brightness in Not a Number';
-    if (!Utilities.isInRange(brightness, 0, 360)) throw 'Brightness number out of range';
+    if (!Utilities.isInRange(brightness, 0, 100)) throw 'Brightness number out of range';
 
     var _degree = parseFloat(degree.toFixed(2));
     var _saturation = parseFloat(saturation.toFixed(2));
@@ -33,11 +30,24 @@ function Hsl(degree, saturation, brightness) {
         return 'hsl(' + _degree + ', ' + _saturation + '%, ' + _brightness + '%)';
     };
 
+    this.setDegree = function (newDegree) {
+        if (isNaN(newDegree)) throw 'Degree in Not a Number';
+        if (!Utilities.isInRange(newDegree, 0, 360)) throw 'Degree number out of range';
+        _degree = parseFloat(newDegree.toFixed(2));
+    };
+
+    this.setSaturation = function (newSaturation) {
+        if (isNaN(newSaturation)) throw 'Saturation in Not a Number';
+        if (!Utilities.isInRange(newSaturation, 0, 100)) throw 'Saturation number out of range';
+        _saturation = parseFloat(newSaturation.toFixed(2));
+    };
+
     this.setBrightness = function (newBrightness) {
         if (isNaN(newBrightness)) throw 'Brightness in Not a Number';
-        if (!Utilities.isInRange(newBrightness, 0, 360)) throw 'Brightness number out of range';
+        if (!Utilities.isInRange(newBrightness, 0, 100)) throw 'Brightness number out of range';
         _brightness = parseFloat(newBrightness.toFixed(2));
     };
+
     return this;
 }
 
