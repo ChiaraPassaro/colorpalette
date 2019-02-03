@@ -15,7 +15,7 @@ var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
 var canvasSplit = $('#doughnut__canvas-split');
 var canvasAnalogous = $('#doughnut__canvas-analogous');
-var canvasTetradic = $('#doughnut__canvas-square');
+var canvasSquare = $('#doughnut__canvas-square');
 
 $(document).ready(function(){
 
@@ -58,7 +58,7 @@ function sendData(){
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
        analogousWheel(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
        insertSquare(color, palette);
-       tetradicWheel(palette, canvasTetradic);
+       squareWheel(palette, canvasSquare);
     } catch (error) {
       console.log(error);
     }
@@ -244,7 +244,7 @@ function analogousWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
   getChart(analogous, canvas, 30, 'Analogous');
 }
 
-function tetradicWheel(palette,  canvas) {
+function squareWheel(palette,  canvas) {
   var tetradic = palette.square();
   var basecolor = palette.getBasecolor();
   tetradic.push(basecolor);
