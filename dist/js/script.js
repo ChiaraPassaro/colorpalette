@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -43231,6 +43231,11 @@ function SetColorPalette(baseColor) {
 
   this.splitComplementar = function () {
     return getColors(60, 2, 30, 'splitComplementary');
+  }; //funzione che crea schema Tetradic
+
+
+  this.square = function () {
+    return getColors(270, 3, 90, 'square');
   }; //funzione che crea colori
 
 
@@ -43256,6 +43261,10 @@ function SetColorPalette(baseColor) {
       switch (_scheme) {
         case 'complementary':
           _firstSchemeColor = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
+          break;
+
+        case 'square':
+          _firstSchemeColor = parseFloat(_baseColor.getDegree().toFixed(2));
           break;
 
         case 'analogous':
@@ -43376,6 +43385,7 @@ var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
 var canvasSplit = $('#doughnut__canvas-split');
 var canvasAnalogous = $('#doughnut__canvas-analogous');
+var canvasTetradic = $('#doughnut__canvas-square');
 $(document).ready(function () {
   button.click(function () {
     sendData();
@@ -43413,6 +43423,8 @@ function sendData() {
       splitComplementarWheel(palette, canvasSplit);
       insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
       analogousWheel(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+      insertSquare(color, palette);
+      tetradicWheel(palette, canvasTetradic);
     } catch (error) {
       console.log(error);
     }
@@ -43533,6 +43545,28 @@ function insertAnalogous(color, palette, range, degree, analogousType) {
   }
 }
 
+function insertSquare(color, palette) {
+  try {
+    var square = palette.square();
+    var scheme = $('.template .scheme').clone();
+    scheme.children('.scheme__title').html('Square colours'); //clono schema e cancello
+
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < square.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', square[i].printHsl());
+      thisColor.html(square[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.square').append(scheme);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function triadWheel(palette, canvas) {
   var triad = palette.triad();
   var basecolor = palette.getBasecolor();
@@ -43559,6 +43593,13 @@ function analogousWheel(palette, typeScheme, numColor, stepDegree, canvas) {
   var basecolor = palette.getBasecolor();
   analogous.push(basecolor);
   getChart(analogous, canvas, 30, 'Analogous');
+}
+
+function tetradicWheel(palette, canvas) {
+  var tetradic = palette.square();
+  var basecolor = palette.getBasecolor();
+  tetradic.push(basecolor);
+  getChart(tetradic, canvas, 30, 'Square');
 }
 
 function getChart(palette, canvas, step, title) {
@@ -43645,14 +43686,26 @@ function isEven(number) {
 
 /***/ }),
 
-/***/ 1:
-/*!********************************!*\
-  !*** multi ./src/js/script.js ***!
-  \********************************/
+/***/ "./src/scss/style.scss":
+/*!*****************************!*\
+  !*** ./src/scss/style.scss ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!******************************************************!*\
+  !*** multi ./src/js/script.js ./src/scss/style.scss ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/kja/sites/www/html/palettecolori/src/js/script.js */"./src/js/script.js");
+__webpack_require__(/*! /home/kja/sites/www/html/palettecolori/src/js/script.js */"./src/js/script.js");
+module.exports = __webpack_require__(/*! /home/kja/sites/www/html/palettecolori/src/scss/style.scss */"./src/scss/style.scss");
 
 
 /***/ })

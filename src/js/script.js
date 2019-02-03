@@ -15,6 +15,7 @@ var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
 var canvasSplit = $('#doughnut__canvas-split');
 var canvasAnalogous = $('#doughnut__canvas-analogous');
+var canvasTetradic = $('#doughnut__canvas-square');
 
 $(document).ready(function(){
 
@@ -56,6 +57,8 @@ function sendData(){
        splitComplementarWheel(palette, canvasSplit);
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
        analogousWheel(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+       insertSquare(color, palette);
+       tetradicWheel(palette, canvasTetradic);
     } catch (error) {
       console.log(error);
     }
@@ -186,6 +189,33 @@ function insertAnalogous(color, palette,  range, degree, analogousType){
   }
 }
 
+function insertSquare(color, palette){
+  try {
+    var square = palette.square();
+
+    var scheme = $('.template .scheme').clone();
+
+
+      scheme.children('.scheme__title').html('Square colours');
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < square.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', square[i].printHsl());
+      thisColor.html(square[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.square').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function triadWheel(palette, canvas) {
   var triad = palette.triad();
   var basecolor = palette.getBasecolor();
@@ -212,6 +242,13 @@ function analogousWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
   var basecolor = palette.getBasecolor();
   analogous.push(basecolor);
   getChart(analogous, canvas, 30, 'Analogous');
+}
+
+function tetradicWheel(palette,  canvas) {
+  var tetradic = palette.square();
+  var basecolor = palette.getBasecolor();
+  tetradic.push(basecolor);
+  getChart(tetradic, canvas, 30, 'Square');
 }
 
 function getChart(palette, canvas, step, title) {

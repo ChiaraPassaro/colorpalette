@@ -100,6 +100,11 @@ function SetColorPalette(baseColor) {
         return getColors(60, 2, 30, 'splitComplementary');
     };
 
+    //funzione che crea schema Tetradic
+    this.square = function () {
+        return getColors(270, 3, 90, 'square');
+    };
+
     //funzione che crea colori
     function getColors(rangeDegree, numColor, stepDegree, scheme) {
         var _rangeDegree = parseFloat(rangeDegree.toFixed(2));
@@ -121,6 +126,9 @@ function SetColorPalette(baseColor) {
             switch (_scheme) {
                 case 'complementary':
                     _firstSchemeColor = parseFloat((_baseColor.getDegree() + 180).toFixed(2));
+                    break;
+                case 'square':
+                    _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
                     break;
                 case 'analogous':
                     _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
