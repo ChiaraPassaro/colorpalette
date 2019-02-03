@@ -100,9 +100,14 @@ function SetColorPalette(baseColor) {
         return getColors(60, 2, 30, 'splitComplementary');
     };
 
-    //funzione che crea schema Tetradic
+    //funzione che crea schema Square
     this.square = function () {
         return getColors(270, 3, 90, 'square');
+    };
+
+    //funzione che crea schema Tetradic
+    this.tetradic = function () {
+        return getColors(330, 10, 30, 'tetradic');
     };
 
     //funzione che crea colori
@@ -129,6 +134,9 @@ function SetColorPalette(baseColor) {
                     break;
                 case 'square':
                     _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
+                    break;
+                case 'tetradic':
+                    _firstSchemeColor = parseFloat((_baseColor.getDegree() - 30).toFixed(2));
                     break;
                 case 'analogous':
                     _firstSchemeColor = parseFloat((_baseColor.getDegree()).toFixed(2));
@@ -202,6 +210,12 @@ function SetColorPalette(baseColor) {
             //elimino i colori freddi
             _arrayColors.reverse();
             _arrayColors.splice(0, (_num / 2));
+        }
+        if (_scheme === 'tetradic') {
+            //elimino i colori inutili
+            _arrayColors.splice(1, 3);
+            _arrayColors.splice(2, 1);
+            _arrayColors.splice(3, 3);
         }
 
         return _arrayColors;
