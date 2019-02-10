@@ -43752,7 +43752,7 @@ function insertMono(color, palette, numColor, stepDegree, typeScheme) {
   try {
     var monoPalette = palette.mono(numColor, stepDegree, typeScheme);
     var scheme = $('.template .scheme').clone();
-    scheme.children('.scheme__title').html('Monochrome colours.<br> Degree: ' + degree); //clono schema e cancello
+    scheme.children('.scheme__title').html('Monochrome colours.<br> Degree: ' + stepDegree); //clono schema e cancello
 
     var colorTpl = scheme.find('.scheme__color').clone();
     scheme.find('.scheme__colors').html('');
