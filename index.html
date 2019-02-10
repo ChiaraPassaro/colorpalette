@@ -30,6 +30,15 @@
         </select>
       </p>
       <p>
+        <label>Mono setup</label>
+        <input type="text" id="range-mono" placeholder="Insert number color - even value" size="30">
+        <input type="text" id="step-degree-mono" placeholder="Insert degree" size="30">
+        <select id="mono-type">
+          <option value="saturation">Saturation</option>
+          <option value="brightness">Brightness</option>
+        </select>
+      </p>
+      <p>
         <button type="button" name="send" id="send">send</button>
       </p>
     </div>
@@ -42,6 +51,7 @@
       <div class="analogous row"></div>
       <div class="square row"></div>
       <div class="tetradic row"></div>
+      <div class="mono row"></div>
       <div class="doughnut">
         <canvas id="doughnut__canvas-triad"></canvas>
         <canvas id="doughnut__canvas-complementar"></canvas>
@@ -49,6 +59,7 @@
         <canvas id="doughnut__canvas-analogous"></canvas>
         <canvas id="doughnut__canvas-square"></canvas>
         <canvas id="doughnut__canvas-tetradic"></canvas>
+        <canvas id="doughnut__canvas-mono"></canvas>
       </div>
     </div>
 

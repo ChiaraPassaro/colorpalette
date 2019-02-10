@@ -43241,6 +43241,19 @@ function SetColorPalette(baseColor) {
 
   this.tetradic = function () {
     return getColors(330, 10, 30, 'tetradic');
+  }; //funzione che crea schema Monochrome
+
+
+  this.mono = function (numColor, stepDegree, typeScheme) {
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even'; //console.log(typeScheme);
+
+    switch (typeScheme) {
+      case 'saturation':
+        return getColorsMono(numColor, stepDegree, 'monoSaturation');
+
+      case 'brightness':
+        return getColorsMono(numColor, stepDegree, 'monoBrightness');
+    }
   }; //funzione che crea colori
 
 
@@ -43335,6 +43348,15 @@ function SetColorPalette(baseColor) {
 
     if (!scheme || scheme === 'splitComplementary') {
       _arrayColors.splice(_num / 2, 1);
+    } //se tetradic elimino i colori generati che non servono
+
+
+    if (_scheme === 'tetradic') {
+      _arrayColors.splice(1, 3);
+
+      _arrayColors.splice(2, 1);
+
+      _arrayColors.splice(3, 3);
     } //per lo schema analogo inverto i dati
 
 
@@ -43356,16 +43378,69 @@ function SetColorPalette(baseColor) {
       _arrayColors.splice(0, _num / 2);
     }
 
-    if (_scheme === 'tetradic') {
-      //elimino i colori inutili
-      _arrayColors.splice(1, 3);
+    return _arrayColors;
+  } //Funzione che crea colori mono
 
-      _arrayColors.splice(2, 1);
 
-      _arrayColors.splice(3, 3);
+  function getColorsMono(numColor, stepDegree, scheme) {
+    var _totalColors = 100;
+
+    var _num = numColor || 4;
+
+    _num = Math.floor(_num);
+
+    var _step = stepDegree || 10;
+
+    _step = parseFloat(_step.toFixed(2)); //se il numero di gradi è superiore a _rangeDegree  errore
+
+    if (_step * _num > _totalColors) throw 'Out of range >' + _totalColors;
+
+    var _scheme = scheme || false;
+
+    switch (typeScheme) {
+      case 'monoSaturation':
+        var _firstSchemeColor = parseFloat(_baseColor.getSaturation().toFixed(2));
+
+        break;
+
+      case 'monoBrightness':
+        var _firstSchemeColor = parseFloat(_baseColor.getBrightness().toFixed(2));
+
+        break;
     }
 
-    return _arrayColors;
+    var _arrayColors = [_firstSchemeColor]; //ciclo che prende colore precedente e inserisce -_step
+
+    for (var i = _num / 2; i >= 1; i--) {
+      var _newColor = _arrayColors[_arrayColors.length - 1] - _step; //trasformo in un numero a due decimali
+
+
+      _newColor = parseFloat(_newColor.toFixed(2)); //aggiungo colore all'ultimo posto
+
+      _arrayColors.push(_newColor);
+    } //ciclo che prende colore precedente e inserisce +_step
+
+
+    for (var k = 0; k < _num / 2; k++) {
+      _newColor = _arrayColors[0] + _step; //trasformo in un numero a due decimali
+
+      _newColor = parseFloat(_newColor.toFixed(2)); //aggiungo colore al primo posto
+
+      _arrayColors.unshift(_newColor);
+    }
+
+    _arrayColors.map(function (currentValue, index) {
+      switch (typeScheme) {
+        case 'monoSaturation':
+          _arrayColors[index] = new Hsl(_baseColor.getDegree(), _arrayColors[index], _baseColor.getBrightness());
+          break;
+
+        case 'monoBrightness':
+          _arrayColors[index] = new Hsl(_baseColor.getDegree(), _baseColor.getSaturation(), _arrayColors[index]);
+          break;
+      } //sostituisco con nuovo oggetto Hsl()
+
+    });
   }
 
   return this;
@@ -43398,6 +43473,9 @@ var inputStepDegreeComplementary = $('#step-degree');
 var inputRangeAnalogous = $('#range-analogous');
 var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var selectAnalogousType = $('#analogous-type');
+var inputRangeMono = $('#range-mono');
+var inputStepDegreeMono = $('#step-degree-mono');
+var selectMonoType = $('#mono-type');
 var button = $('#send');
 var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
@@ -43405,6 +43483,7 @@ var canvasSplit = $('#doughnut__canvas-split');
 var canvasAnalogous = $('#doughnut__canvas-analogous');
 var canvasSquare = $('#doughnut__canvas-square');
 var canvasTetradic = $('#doughnut__canvas-tetradic');
+var canvasMono = $('#doughnut__canvas-mono');
 $(document).ready(function () {
   button.click(function () {
     sendData();
@@ -43425,6 +43504,9 @@ function sendData() {
   var rangeAnalogous = Math.floor(parseInt(inputRangeAnalogous.val()));
   var stepDegreeAnalogous = parseFloat(inputStepDegreeAnalogous.val());
   var analogousType = selectAnalogousType.val();
+  var rangeMono = Math.floor(parseInt(inputRangeMono.val()));
+  var stepDegreeMono = parseFloat(inputStepDegreeMono.val());
+  var monoType = selectMonoType.val();
 
   if (!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)) {
     try {
@@ -43437,6 +43519,7 @@ function sendData() {
       $('.analogous').html('');
       $('.square').html('');
       $('.tetradic').html('');
+      $('.mono').html('');
       insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
       triadWheel(palette, canvasTriad);
       complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
@@ -43448,6 +43531,7 @@ function sendData() {
       squareWheel(palette, canvasSquare);
       insertTetradic(color, palette);
       tetradicWheel(palette, canvasTetradic);
+      insertMono(color, palette, rangeMono, stepDegreeMono, monoType); //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -43648,6 +43732,28 @@ function squareWheel(palette, canvas) {
 function tetradicWheel(palette, canvas) {
   var tetradic = palette.tetradic();
   getChart(tetradic, canvas, 30, 'Tetradic');
+}
+
+function insertMono(color, palette, numColor, stepDegree, typeScheme) {
+  try {
+    var mono = palette.mono(numColor, stepDegree, typeScheme);
+    var scheme = $('.template .scheme').clone();
+    scheme.children('.scheme__title').html('Monochrome colours.<br> Degree: ' + degree); //clono schema e cancello
+
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < mono.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', mono[i].printHsl());
+      thisColor.html(mono[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.mono').append(scheme);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function getChart(palette, canvas, step, title) {

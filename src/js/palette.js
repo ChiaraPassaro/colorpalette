@@ -58,12 +58,12 @@ function SetColorPalette(baseColor) {
     var _baseColor = baseColor;
 
     //ritorna stringa con colore base
-    this.getBasecolor = function (){
-     return _baseColor;
+    this.getBasecolor = function () {
+        return _baseColor;
     };
 
     //update del colore base
-    this.updateColorPalette = function(newColor){
+    this.updateColorPalette = function (newColor) {
         if (newColor.constructor !== Hsl) throw 'Basecolor is not an object';
         _baseColor = newColor;
     };
@@ -109,6 +109,21 @@ function SetColorPalette(baseColor) {
     this.tetradic = function () {
         return getColors(330, 10, 30, 'tetradic');
     };
+
+    //funzione che crea schema Monochrome
+    this.mono = function (numColor, stepDegree, typeScheme) {
+        if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
+        //console.log(typeScheme);
+
+        switch (typeScheme) {
+            case 'saturation':
+                return getColorsMono(numColor, stepDegree, 'monoSaturation');
+            case 'brightness':
+                return getColorsMono(numColor, stepDegree, 'monoBrightness');
+        }
+
+    };
+
 
     //funzione che crea colori
     function getColors(rangeDegree, numColor, stepDegree, scheme) {
@@ -197,6 +212,13 @@ function SetColorPalette(baseColor) {
             _arrayColors.splice((_num / 2), 1);
         }
 
+        //se tetradic elimino i colori generati che non servono
+        if (_scheme === 'tetradic') {
+            _arrayColors.splice(1, 3);
+            _arrayColors.splice(2, 1);
+            _arrayColors.splice(3, 3);
+        }
+
         //per lo schema analogo inverto i dati
         if (_scheme === 'analogous') {
             _arrayColors.reverse();
@@ -211,14 +233,67 @@ function SetColorPalette(baseColor) {
             _arrayColors.reverse();
             _arrayColors.splice(0, (_num / 2));
         }
-        if (_scheme === 'tetradic') {
-            //elimino i colori inutili
-            _arrayColors.splice(1, 3);
-            _arrayColors.splice(2, 1);
-            _arrayColors.splice(3, 3);
-        }
 
         return _arrayColors;
+    }
+
+    //Funzione che crea colori mono
+    function getColorsMono(numColor, stepDegree, scheme) {
+
+        var _totalColors = 100;
+
+        var _num = numColor || 4;
+        _num = Math.floor(_num);
+
+        var _step = stepDegree || 10;
+        _step = parseFloat(_step.toFixed(2));
+
+        //se il numero di gradi è superiore a _rangeDegree  errore
+        if (_step * _num > _totalColors) throw 'Out of range >' + _totalColors;
+
+        var _scheme = scheme || false;
+
+        switch (typeScheme) {
+           case 'monoSaturation':
+               var _firstSchemeColor = parseFloat((_baseColor.getSaturation()).toFixed(2));
+               break;
+           case 'monoBrightness':
+               var _firstSchemeColor = parseFloat((_baseColor.getBrightness()).toFixed(2));
+               break;
+        }
+
+        var _arrayColors = [_firstSchemeColor];
+
+        //ciclo che prende colore precedente e inserisce -_step
+        for (var i = _num / 2; i >= 1; i--) {
+            var _newColor = _arrayColors[_arrayColors.length - 1] - _step;
+            //trasformo in un numero a due decimali
+            _newColor = parseFloat(_newColor.toFixed(2));
+            //aggiungo colore all'ultimo posto
+            _arrayColors.push(_newColor);
+        }
+
+        //ciclo che prende colore precedente e inserisce +_step
+        for (var k = 0; k < (_num / 2); k++) {
+            _newColor = _arrayColors[0] + _step;
+            //trasformo in un numero a due decimali
+            _newColor = parseFloat(_newColor.toFixed(2));
+            //aggiungo colore al primo posto
+            _arrayColors.unshift(_newColor);
+        }
+
+        _arrayColors.map(function (currentValue, index) {
+            switch (typeScheme) {
+                case 'monoSaturation':
+                    _arrayColors[index] = new Hsl(_baseColor.getDegree(), _arrayColors[index], _baseColor.getBrightness());
+                    break;
+                case 'monoBrightness':
+                    _arrayColors[index] = new Hsl(_baseColor.getDegree(), _baseColor.getSaturation(), _arrayColors[index]);
+                    break;
+            }
+            //sostituisco con nuovo oggetto Hsl()
+
+        });
     }
     return this;
 }

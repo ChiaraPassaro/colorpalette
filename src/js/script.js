@@ -10,6 +10,9 @@ var inputStepDegreeComplementary = $('#step-degree');
 var inputRangeAnalogous = $('#range-analogous');
 var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var selectAnalogousType = $('#analogous-type');
+var inputRangeMono = $('#range-mono');
+var inputStepDegreeMono = $('#step-degree-mono');
+var selectMonoType = $('#mono-type');
 var button = $('#send');
 var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
@@ -17,6 +20,7 @@ var canvasSplit = $('#doughnut__canvas-split');
 var canvasAnalogous = $('#doughnut__canvas-analogous');
 var canvasSquare = $('#doughnut__canvas-square');
 var canvasTetradic = $('#doughnut__canvas-tetradic');
+var canvasMono = $('#doughnut__canvas-mono');
 
 $(document).ready(function(){
 
@@ -41,6 +45,10 @@ function sendData(){
   var rangeAnalogous = Math.floor(parseInt(inputRangeAnalogous.val()));
   var stepDegreeAnalogous = parseFloat(inputStepDegreeAnalogous.val());
   var analogousType = selectAnalogousType.val();
+  var rangeMono = Math.floor(parseInt(inputRangeMono.val()));
+  var stepDegreeMono = parseFloat(inputStepDegreeMono.val());
+  var monoType = selectMonoType.val();
+
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
@@ -53,6 +61,7 @@ function sendData(){
       $('.analogous').html('');
       $('.square').html('');
       $('.tetradic').html('');
+      $('.mono').html('');
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
        triadWheel(palette, canvasTriad);
        complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
@@ -64,6 +73,8 @@ function sendData(){
        squareWheel(palette, canvasSquare);
        insertTetradic(color, palette);
        tetradicWheel(palette, canvasTetradic);
+       insertMono(color, palette, rangeMono, stepDegreeMono, monoType);
+       //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -285,6 +296,34 @@ function tetradicWheel(palette, canvas) {
   var tetradic = palette.tetradic();
   getChart(tetradic, canvas, 30, 'Tetradic');
 }
+
+function insertMono(color, palette, numColor, stepDegree, typeScheme){
+  try {
+    var mono = palette.mono(numColor, stepDegree, typeScheme);
+
+    var scheme = $('.template .scheme').clone();
+
+    scheme.children('.scheme__title').html('Monochrome colours.<br> Degree: ' + degree);
+
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < mono.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', mono[i].printHsl());
+      thisColor.html(mono[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.mono').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 function getChart(palette, canvas, step, title) {
 
