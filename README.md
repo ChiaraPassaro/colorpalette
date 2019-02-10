@@ -2,7 +2,7 @@
 
 Script che genera diversi tipi di palette a partire da un colore di base
 
-V1.3
+V1.4
 
 ## Funzionalità
 
@@ -85,7 +85,42 @@ Gradi massimi consentiti numColor*step = 60<br/>
 Array [obj Hsl(), obj Hsl(), ...]
 ```
 
+
+### Crea palette di colori tetradica:<br/>
+```
+palette.tetradic()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl()]
+```
+
+
+### Crea palette di colori quadratico:<br/>
+```
+palette.square()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl()]
+```
+
+
+### Crea palette di colori monocromo:<br/>
+```
+palette.mono (numColor, stepDegree, typeScheme)
+```
+##### Argomenti:<br/>
+Numero di colori desiderati - numero pari <br/>
+Step in gradi tra un colore e l'altro<br/>
+Gradi massimi consentiti numColor*step = 100<br/>
+Tipo di schema = Saturation / Brightness
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl()]
+```
+
 ### ToDo color schemes<br/>
 Tetradic, Square, Monochrome, Random Colors whith dominant color<br/>
 
-![Color Palette](screen/screen13.png)
+![Color Palette](screen/screen14.png)

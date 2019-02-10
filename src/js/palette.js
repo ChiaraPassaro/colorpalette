@@ -306,6 +306,7 @@ function SetColorPalette(baseColor) {
         _arrayColors.reverse();
         return _arrayColors;
     }
+    
     return this;
 }
 
