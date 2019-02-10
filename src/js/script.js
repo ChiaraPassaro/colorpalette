@@ -74,7 +74,8 @@ function sendData(){
        insertTetradic(color, palette);
        tetradicWheel(palette, canvasTetradic);
        insertMono(color, palette, rangeMono, stepDegreeMono, monoType);
-       //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+       monoWheel(palette, monoType, rangeMono, stepDegreeMono,  canvasMono);
+      //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -299,8 +300,7 @@ function tetradicWheel(palette, canvas) {
 
 function insertMono(color, palette, numColor, stepDegree, typeScheme){
   try {
-    var mono = palette.mono(numColor, stepDegree, typeScheme);
-
+    var monoPalette = palette.mono(numColor, stepDegree, typeScheme);
     var scheme = $('.template .scheme').clone();
 
     scheme.children('.scheme__title').html('Monochrome colours.<br> Degree: ' + degree);
@@ -310,10 +310,11 @@ function insertMono(color, palette, numColor, stepDegree, typeScheme){
     var colorTpl = scheme.find('.scheme__color').clone();
     scheme.find('.scheme__colors').html('');
 
-    for (var i = 0; i < mono.length; i++) {
+    for (var i = 0; i < monoPalette.length; i++) {
       var thisColor = colorTpl.clone();
-      thisColor.css('background', mono[i].printHsl());
-      thisColor.html(mono[i].printHsl());
+      //console.log(monoPalette);
+      thisColor.css('background', monoPalette[i].printHsl());
+      thisColor.html(monoPalette[i].printHsl());
       scheme.find('.scheme__colors').append(thisColor);
     }
 
@@ -324,9 +325,15 @@ function insertMono(color, palette, numColor, stepDegree, typeScheme){
   }
 }
 
+function monoWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
+  console.log(numColor);
+  var monopalette = palette.mono(numColor, stepDegree, typeScheme);
+  var basecolor = palette.getBasecolor();
+  monopalette.push(basecolor);
+  //getChart(monopalette, canvas, stepDegree, 'MonoChrome');
+}
 
 function getChart(palette, canvas, step, title) {
-
   var degrees = [];
   var colorsLabel = [];
 
@@ -367,5 +374,50 @@ function getChart(palette, canvas, step, title) {
         }
         //rotation: 2 * Math.PI
       }
+  });
+}
+
+//TODO
+function getChartMono(palette, canvas, step, title) {
+  var degrees = [];
+  var colorsLabel = [];
+
+  for (var i = 0; i < 360 ; i++) {
+    //tutti i gradi hanno valore 1 per comparire nella chart
+    degrees.push(1);
+    //tutti i gradi hanno il colore di background ad opacità 0.2
+    colorsLabel.push('hsl('+ i + ', '+ i +' %, '+ i +'%, 0.2)');
+  }
+
+  //inserisco i gradi della palette con dato uguale allo step usato per generare la palette
+  for (var i = 0; i < palette.length; i++) {
+    var degree = palette[i].getDegree();
+    degrees[degree] =  step;
+    colorsLabel[degree] = palette[i].printHsl();
+  }
+
+  var data = {
+    datasets: [{
+      data: degrees,
+      backgroundColor: colorsLabel,
+      borderWidth: 0
+    }],
+    labels: colorsLabel
+  };
+
+  var thisChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: data,
+    options:
+        {
+          title: {
+            display: true,
+            text: title
+          },
+          legend: {
+            display: false
+          }
+          //rotation: 2 * Math.PI
+        }
   });
 }

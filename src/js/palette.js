@@ -112,8 +112,8 @@ function SetColorPalette(baseColor) {
 
     //funzione che crea schema Monochrome
     this.mono = function (numColor, stepDegree, typeScheme) {
+        console.log(!Utilities.isEven(numColor));
         if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
-        //console.log(typeScheme);
 
         switch (typeScheme) {
             case 'saturation':
@@ -252,8 +252,7 @@ function SetColorPalette(baseColor) {
         if (_step * _num > _totalColors) throw 'Out of range >' + _totalColors;
 
         var _scheme = scheme || false;
-
-        switch (typeScheme) {
+        switch (_scheme) {
            case 'monoSaturation':
                var _firstSchemeColor = parseFloat((_baseColor.getSaturation()).toFixed(2));
                break;
@@ -283,7 +282,17 @@ function SetColorPalette(baseColor) {
         }
 
         _arrayColors.map(function (currentValue, index) {
-            switch (typeScheme) {
+
+            if (Utilities.isGreaterThan(currentValue, _totalColors)) {
+                _arrayColors[index] = parseFloat((currentValue - _totalColors).toFixed(2));
+            }
+
+            //se il numero è negativo  aggiungo  100
+            if (currentValue < 0) {
+                _arrayColors[index] = parseFloat((currentValue + _totalColors).toFixed(2));
+            }
+
+            switch (_scheme) {
                 case 'monoSaturation':
                     _arrayColors[index] = new Hsl(_baseColor.getDegree(), _arrayColors[index], _baseColor.getBrightness());
                     break;
@@ -294,6 +303,8 @@ function SetColorPalette(baseColor) {
             //sostituisco con nuovo oggetto Hsl()
 
         });
+        _arrayColors.reverse();
+        return _arrayColors;
     }
     return this;
 }
