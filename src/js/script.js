@@ -1,3 +1,5 @@
+import {Hsl} from "./palette";
+
 var $ = require("jquery");
 var Chart = require('chart.js');
 import * as ColorPalette from './palette.js';
@@ -16,6 +18,8 @@ var inputRangeRandom = $('#range-random');
 var inputPercRandom = $('#perc-random');
 var selectMonoType = $('#mono-type');
 var button = $('#send');
+
+//chartjs
 var canvasTriad = $('#doughnut__canvas-triad');
 var canvasComplementary = $('#doughnut__canvas-complementar');
 var canvasSplit = $('#doughnut__canvas-split');
@@ -24,6 +28,16 @@ var canvasSquare = $('#doughnut__canvas-square');
 var canvasTetradic = $('#doughnut__canvas-tetradic');
 var canvasMono = $('#doughnut__canvas-mono');
 var canvasRandom = $('#doughnut__canvas-random');
+var chart = {
+  'triadic' : null,
+  'complementary' : null,
+  'splitComplementary' : null,
+  'analogous' : null,
+  'square' : null,
+  'tetradic' : null,
+  'mono' : null,
+  'random' : null,
+};
 
 $(document).ready(function(){
 
@@ -58,31 +72,26 @@ function sendData(){
     try {
       var color = new ColorPalette.Hsl(degree, saturation, brightness);
       var palette = new ColorPalette.SetColorPalette(color);
-      //console.log(palette.basecolor.printHsl());
-      insertTriad(color, palette);
-      $('.complementary').html('');
-      $('.split-complementary').html('');
-      $('.analogous').html('');
-      $('.square').html('');
-      $('.tetradic').html('');
-      $('.mono').html('');
-      $('.random-dominant').html('');
+
+      $('.results .squares .row').html('');
+      $('.results .doughnut canvas').html('');
+
+        insertTriad(color, palette);
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
        triadWheel(palette, canvasTriad);
-       complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
+       complementarWheel(palette, stepDegreeComplementary, canvasComplementary);
        insertSplitComplementary(color, palette);
        splitComplementarWheel(palette, canvasSplit);
        insertAnalogous(color, palette, rangeAnalogous, stepDegreeAnalogous, analogousType);
-       analogousWheel(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+       analogousWheel(palette, analogousType, stepDegreeAnalogous, canvasAnalogous);
        insertSquare(color, palette);
        squareWheel(palette, canvasSquare);
        insertTetradic(color, palette);
        tetradicWheel(palette, canvasTetradic);
        insertMono(color, palette, rangeMono, stepDegreeMono, monoType);
-       monoWheel(palette, monoType, rangeMono, stepDegreeMono,  canvasMono);
+       monoWheel(palette, monoType, stepDegreeMono, canvasMono);
        insertRandomDominant(color, palette, rangeRandom, percRandom);
-       randomDominantWheel(palette, rangeRandom, canvasRandom);
-      //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+       randomDominantWheel(palette, canvasRandom);
     } catch (error) {
       console.log(error);
     }
@@ -267,77 +276,6 @@ function insertTetradic(color, palette){
   }
 }
 
-
-function insertRandomDominant(color, palette, numColor, percDominant){
-  try {
-    var randomDominant = palette.randomDominant(numColor, percDominant);
-
-    var scheme = $('.template .scheme').clone();
-
-    scheme.children('.scheme__title').html('Random Dominant');
-
-    //clono schema e cancello
-    var colorTpl = scheme.find('.scheme__color').clone();
-    scheme.find('.scheme__colors').html('');
-
-    for (var i = 0; i < randomDominant.length; i++) {
-      var thisColor = colorTpl.clone();
-      thisColor.css('background', randomDominant[i].printHsl());
-      thisColor.html(randomDominant[i].printHsl());
-      scheme.find('.scheme__colors').append(thisColor);
-    }
-
-    $('.random-dominant').append(scheme);
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function randomDominantWheel(palette, step, canvas) {
-  var randomDominant = palette.randomDominant();
-  console.log(randomDominant);
- // getChart(randomDominant, canvas, step, 'Random Dominant');
-}
-
-function triadWheel(palette, canvas) {
-  var triad = palette.triad();
-  var basecolor = palette.getBasecolor();
-  triad.push(basecolor);
-  getChart(triad, canvas, 30, 'Triad');
-}
-
-function complementarWheel(palette, range, step, canvas) {
-  var complementar = palette.complementar(range, step);
-  var basecolor = palette.getBasecolor();
-  complementar.push(basecolor);
-  getChart(complementar, canvas, step, 'Complementary Range');
-}
-
-function splitComplementarWheel(palette, canvas) {
-  var splitComplementar = palette.splitComplementar();
-  var basecolor = palette.getBasecolor();
-  splitComplementar.push(basecolor);
-  getChart(splitComplementar, canvas, 30, 'Split Complementary');
-}
-
-function analogousWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
-  var analogous = palette.analogous(typeScheme, numColor, stepDegree);
-  var basecolor = palette.getBasecolor();
-  analogous.push(basecolor);
-  getChart(analogous, canvas, 30, 'Analogous');
-}
-
-function squareWheel(palette,  canvas) {
-  var square = palette.square();
-  getChart(square, canvas, 30, 'Square');
-}
-
-function tetradicWheel(palette, canvas) {
-  var tetradic = palette.tetradic();
-  getChart(tetradic, canvas, 30, 'Tetradic');
-}
-
 function insertMono(color, palette, numColor, stepDegree, typeScheme){
   try {
     var monoPalette = palette.mono(numColor, stepDegree, typeScheme);
@@ -365,15 +303,92 @@ function insertMono(color, palette, numColor, stepDegree, typeScheme){
   }
 }
 
-function monoWheel(palette, typeScheme, numColor, stepDegree,  canvas) {
-  console.log(numColor);
-  var monopalette = palette.mono(numColor, stepDegree, typeScheme);
-  var basecolor = palette.getBasecolor();
-  monopalette.push(basecolor);
-  getChartMono(basecolor, monopalette, canvas, stepDegree, 'MonoChrome', typeScheme);
+function insertRandomDominant(color, palette, numColor, percDominant){
+  try {
+    var randomDominant = palette.randomDominant(numColor, percDominant);
+
+    var scheme = $('.template .scheme').clone();
+
+    scheme.children('.scheme__title').html('Random Dominant');
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < randomDominant.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', randomDominant[i].printHsl());
+      thisColor.html(randomDominant[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.random-dominant').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function getChart(palette, canvas, step, title) {
+
+function triadWheel(palette, canvas) {
+  var triad = palette.getTriad();
+  var basecolor = palette.getBasecolor();
+  triad.push(basecolor);
+  getChart(triad, canvas, 30, 'Triad', 'triadic');
+}
+
+function complementarWheel(palette, step, canvas) {
+  var complementar = palette.getComplementar();
+  var basecolor = palette.getBasecolor();
+  complementar.push(basecolor);
+  getChart(complementar, canvas, step, 'Complementary Range', 'complementary');
+}
+
+function splitComplementarWheel(palette, canvas) {
+  var splitComplementar = palette.getSplitComplementar();
+  var basecolor = palette.getBasecolor();
+  splitComplementar.push(basecolor);
+  getChart(splitComplementar, canvas, 30, 'Split Complementary', 'splitComplementary');
+}
+
+function analogousWheel(palette, typeScheme, stepDegree, canvas) {
+  var analogous = palette.getAnalogous();
+  var basecolor = palette.getBasecolor();
+  analogous[typeScheme].push(basecolor);
+  getChart(analogous[typeScheme], canvas, 30, 'Analogous', 'analogous');
+}
+
+function squareWheel(palette,  canvas) {
+  var square = palette.getSquare();
+  getChart(square, canvas, 30, 'Square', 'square');
+}
+
+function tetradicWheel(palette, canvas) {
+  var tetradic = palette.getTetradic();
+  getChart(tetradic, canvas, 30, 'Tetradic', 'tetradic');
+}
+
+function monoWheel(palette, typeScheme, stepDegree, canvas) {
+  var monopalette = palette.getMono();
+  monopalette = monopalette[typeScheme];
+  var basecolor = palette.getBasecolor();
+  monopalette.push(basecolor);
+  getChartMono(basecolor, monopalette, canvas, stepDegree, 'MonoChrome', typeScheme, 'mono');
+}
+
+function randomDominantWheel(palette, canvas) {
+  var randomDominant = palette.getRandomDominant();
+  var step = 360 / randomDominant.length;
+  getChart(randomDominant, canvas, step, 'Random Dominant', 'random');
+}
+
+function getChart(palette, canvas, step, title, type) {
+  if(chart[type] !== null){
+    if(chart[type].constructor === Chart){
+      chart[type].destroy();
+    }
+  }
+
   var degrees = [];
   var colorsLabel = [];
 
@@ -400,7 +415,7 @@ function getChart(palette, canvas, step, title) {
     labels: colorsLabel
   };
 
-  var thisChart = new Chart(canvas, {
+  chart[type] = new Chart(canvas, {
     type: 'doughnut',
     data: data,
     options:
@@ -417,8 +432,12 @@ function getChart(palette, canvas, step, title) {
   });
 }
 
-//TODO
-function getChartMono(baseColor, palette, canvas, step, title, type) {
+function getChartMono(baseColor, palette, canvas, step, title, typeScheme, type) {
+  if(chart[type] !== null){
+    if(chart[type].constructor === Chart){
+      chart[type].destroy();
+    }
+  }
   var degrees = [];
   var colorsLabel = [];
 
@@ -433,7 +452,7 @@ function getChartMono(baseColor, palette, canvas, step, title, type) {
       colorsLabel.push('hsl('+  baseColor.getDegree() + ', '+ baseColor.getSaturation()+ '%, '+ i +'%, 0.1)');
     }
   }
-  console.log("ho inserito i dati base");
+
   //inserisco i gradi della palette con dato uguale allo step usato per generare la palette
   for (var i = 0; i < palette.length; i++) {
     var degree;
@@ -456,7 +475,7 @@ function getChartMono(baseColor, palette, canvas, step, title, type) {
     labels: colorsLabel
   };
 
-  var thisChart = new Chart(canvas, {
+  chart[type] = new Chart(canvas, {
     type: 'doughnut',
     data: data,
     options:

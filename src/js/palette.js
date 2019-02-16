@@ -59,16 +59,16 @@ function SetColorPalette(baseColor) {
     var _triad;
     var _complementar;
     var _analogous = {
-        'all': undefined,
-        'cold': undefined,
-        'warm': undefined,
+        'allArch': null,
+        'cold': null,
+        'warm': null,
     };
     var _splitComplementar;
     var _square;
     var _tetradic;
     var _mono = {
-        'saturation': undefined,
-        'brightness': undefined,
+        'saturation': null,
+        'brightness': null,
     };
     var _randomDominant;
 
@@ -111,8 +111,8 @@ function SetColorPalette(baseColor) {
 
         switch (typeScheme) {
             case 'allArch':
-                _analogous.all = getColors(120, numColor, stepDegree, 'analogous');
-                return _analogous.all;
+                _analogous.allArch = getColors(120, numColor, stepDegree, 'analogous');
+                return _analogous.allArch;
             case 'cold':
                  _analogous.cold= getColors(120, numColor, stepDegree, 'analogousCold');
                 return _analogous.cold;
@@ -153,6 +153,10 @@ function SetColorPalette(baseColor) {
         return _tetradic;
     };
 
+    this.getTetradic = function () {
+        return _tetradic;
+    };
+
     //funzione che crea schema Monochrome
     this.mono = function (numColor, stepDegree, typeScheme) {
        // console.log(!Utilities.isEven(numColor));
@@ -175,7 +179,8 @@ function SetColorPalette(baseColor) {
 
     //funzione che crea colori Random with Dominant
     this.randomDominant = function (numColor, percDominant) {
-        return getRandomColors(numColor, percDominant);
+        _randomDominant = getRandomColors(numColor, percDominant);
+        return _randomDominant;
     };
 
     this.getRandomDominant = function () {
