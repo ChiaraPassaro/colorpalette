@@ -43188,7 +43188,31 @@ function Hsl(degree, saturation, brightness) {
 function SetColorPalette(baseColor) {
   if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
   var _totalDegree = 360;
-  var _baseColor = baseColor; //ritorna stringa con colore base
+  var _baseColor = baseColor;
+
+  var _triad;
+
+  var _complementar;
+
+  var _analogous = {
+    'all': undefined,
+    'cold': undefined,
+    'warm': undefined
+  };
+
+  var _splitComplementar;
+
+  var _square;
+
+  var _tetradic;
+
+  var _mono = {
+    'saturation': undefined,
+    'brightness': undefined
+  };
+
+  var _randomDominant; //ritorna stringa con colore base
+
 
   this.getBasecolor = function () {
     return _baseColor;
@@ -43202,13 +43226,23 @@ function SetColorPalette(baseColor) {
 
 
   this.triad = function () {
-    return getColors(240, 2, 60);
+    _triad = getColors(240, 2, 60);
+    return _triad;
+  };
+
+  this.getTriad = function (colorPalette) {
+    return _triad;
   }; //funzione che crea complementari
 
 
   this.complementar = function (numColor, stepDegree) {
     if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even';
-    return getColors(140, numColor, stepDegree, 'complementary');
+    _complementar = getColors(140, numColor, stepDegree, 'complementary');
+    return _complementar;
+  };
+
+  this.getComplementar = function () {
+    return _complementar;
   }; //funzione che crea analoghi
 
 
@@ -43217,44 +43251,159 @@ function SetColorPalette(baseColor) {
 
     switch (typeScheme) {
       case 'allArch':
-        return getColors(120, numColor, stepDegree, 'analogous');
+        _analogous.all = getColors(120, numColor, stepDegree, 'analogous');
+        return _analogous.all;
 
       case 'cold':
-        return getColors(120, numColor, stepDegree, 'analogousCold');
+        _analogous.cold = getColors(120, numColor, stepDegree, 'analogousCold');
+        return _analogous.cold;
 
       case 'warm':
-        return getColors(120, numColor, stepDegree, 'analogousWarm');
+        _analogous.warm = getColors(120, numColor, stepDegree, 'analogousWarm');
+        return _analogous.warm;
     }
+  };
+
+  this.getAnalogous = function () {
+    return _analogous;
   }; //funzione che crea complementari divergenti
 
 
   this.splitComplementar = function () {
-    return getColors(60, 2, 30, 'splitComplementary');
+    _splitComplementar = getColors(60, 2, 30, 'splitComplementary');
+    return _splitComplementar;
+  };
+
+  this.getSplitComplementar = function () {
+    return _splitComplementar;
   }; //funzione che crea schema Square
 
 
   this.square = function () {
-    return getColors(270, 3, 90, 'square');
+    _square = getColors(270, 3, 90, 'square');
+    return _square;
+  };
+
+  this.getSquare = function () {
+    return _square;
   }; //funzione che crea schema Tetradic
 
 
   this.tetradic = function () {
-    return getColors(330, 10, 30, 'tetradic');
+    _tetradic = getColors(330, 10, 30, 'tetradic');
+    return _tetradic;
   }; //funzione che crea schema Monochrome
 
 
   this.mono = function (numColor, stepDegree, typeScheme) {
-    console.log(!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor));
+    // console.log(!Utilities.isEven(numColor));
     if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even';
 
     switch (typeScheme) {
       case 'saturation':
-        return getColorsMono(numColor, stepDegree, 'monoSaturation');
+        _mono.saturation = getColorsMono(numColor, stepDegree, 'monoSaturation');
+        return _mono.saturation;
 
       case 'brightness':
-        return getColorsMono(numColor, stepDegree, 'monoBrightness');
+        _mono.brightness = getColorsMono(numColor, stepDegree, 'monoBrightness');
+        return _mono.brightness;
     }
-  }; //funzione che crea colori
+  };
+
+  this.getMono = function () {
+    return _mono;
+  }; //funzione che crea colori Random with Dominant
+
+
+  this.randomDominant = function (numColor, percDominant) {
+    return getRandomColors(numColor, percDominant);
+  };
+
+  this.getRandomDominant = function () {
+    return _randomDominant;
+  }; //funzuione che genera colori random
+
+
+  function getRandomColors(numColor, percDominant) {
+    var _totalDegree = 360;
+
+    var _num = numColor || 10;
+
+    _num = Math.floor(_num);
+    var _percDominant = percDominant;
+    _percDominant = Math.floor(_percDominant);
+    console.log('Perc Dominant richiesta ' + _percDominant);
+    var _step = [];
+
+    while (_step.length < numColor) {
+      var randomStep = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["getIntRandomNumber"](0, _totalDegree);
+
+      if (!_step.includes(randomStep)) {
+        _step.push(randomStep);
+      }
+    }
+
+    var _firstSchemeColor = Math.floor(_baseColor.getDegree());
+
+    var _complementary = _firstSchemeColor + 180; //trasformo in caso sia inferiore a 0 o maggiore di 360
+
+
+    if (_complementary < 0) {
+      _complementary = Math.floor(_complementary + _totalDegree);
+    }
+
+    if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_complementary, _totalDegree)) {
+      _complementary = Math.floor(_complementary - _totalDegree);
+    } //console.log("Complementare" + _complementary);
+    //inserisco primo colore
+    //var _arrayColors = [90, 350, 120, 220 , 60];
+
+
+    var _arrayColors = [_firstSchemeColor]; //genero i colori random
+
+    for (var i = 1; i < _num; i++) {
+      var _newColor = _firstSchemeColor + _step[i]; //trasformo in caso sia inferiore a 0 o maggiore di 360
+
+
+      if (_newColor < 0) {
+        _newColor = Math.floor(_newColor + _totalDegree);
+      }
+
+      if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_newColor, _totalDegree)) {
+        _newColor = Math.floor(_newColor - _totalDegree);
+      }
+
+      _arrayColors.push(_newColor);
+    }
+
+    var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree; //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
+
+
+    _arrayColors.map(function (currentValue, index) {
+      //console.log('Colore di partenza ' + currentValue);
+      var thisColorInPerc = currentValue * 100 / _totalDegree; //console.log('Colore in percentuale ' + thisColorInPerc);
+
+      var _perc = Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100 * _percDominant; // console.log('Perc ' + _perc);
+
+
+      var _newColorInPerc;
+
+      if (thisColorInPerc > _firstSchemeColorInPerc) {
+        _newColorInPerc = thisColorInPerc - _perc;
+      } else {
+        _newColorInPerc = thisColorInPerc + _perc;
+      } // console.log('nuovo valore in perc ' + _newColorInPerc);
+
+
+      currentValue = _newColorInPerc / 100 * _totalDegree;
+      _arrayColors[index] = Math.trunc(currentValue); // console.log('nuovo valore in gradi ' + _arrayColors[index]);
+      //sostituisco con nuovo oggetto Hsl()
+
+      _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
+    });
+
+    return _arrayColors;
+  } //funzione che crea colori
 
 
   function getColors(rangeDegree, numColor, stepDegree, scheme) {
@@ -43488,6 +43637,8 @@ var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var selectAnalogousType = $('#analogous-type');
 var inputRangeMono = $('#range-mono');
 var inputStepDegreeMono = $('#step-degree-mono');
+var inputRangeRandom = $('#range-random');
+var inputPercRandom = $('#perc-random');
 var selectMonoType = $('#mono-type');
 var button = $('#send');
 var canvasTriad = $('#doughnut__canvas-triad');
@@ -43497,6 +43648,7 @@ var canvasAnalogous = $('#doughnut__canvas-analogous');
 var canvasSquare = $('#doughnut__canvas-square');
 var canvasTetradic = $('#doughnut__canvas-tetradic');
 var canvasMono = $('#doughnut__canvas-mono');
+var canvasRandom = $('#doughnut__canvas-random');
 $(document).ready(function () {
   button.click(function () {
     sendData();
@@ -43520,6 +43672,8 @@ function sendData() {
   var rangeMono = Math.floor(parseInt(inputRangeMono.val()));
   var stepDegreeMono = parseFloat(inputStepDegreeMono.val());
   var monoType = selectMonoType.val();
+  var rangeRandom = Math.floor(parseInt(inputRangeRandom.val()));
+  var percRandom = Math.floor(parseInt(inputPercRandom.val()));
 
   if (!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)) {
     try {
@@ -43533,6 +43687,7 @@ function sendData() {
       $('.square').html('');
       $('.tetradic').html('');
       $('.mono').html('');
+      $('.random-dominant').html('');
       insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
       triadWheel(palette, canvasTriad);
       complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
@@ -43545,7 +43700,9 @@ function sendData() {
       insertTetradic(color, palette);
       tetradicWheel(palette, canvasTetradic);
       insertMono(color, palette, rangeMono, stepDegreeMono, monoType);
-      monoWheel(palette, monoType, rangeMono, stepDegreeMono, canvasMono); //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
+      monoWheel(palette, monoType, rangeMono, stepDegreeMono, canvasMono);
+      insertRandomDominant(color, palette, rangeRandom, percRandom);
+      randomDominantWheel(palette, rangeRandom, canvasRandom); //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
     }
@@ -43708,6 +43865,33 @@ function insertTetradic(color, palette) {
   } catch (error) {
     console.log(error);
   }
+}
+
+function insertRandomDominant(color, palette, numColor, percDominant) {
+  try {
+    var randomDominant = palette.randomDominant(numColor, percDominant);
+    var scheme = $('.template .scheme').clone();
+    scheme.children('.scheme__title').html('Random Dominant'); //clono schema e cancello
+
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < randomDominant.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', randomDominant[i].printHsl());
+      thisColor.html(randomDominant[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.random-dominant').append(scheme);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function randomDominantWheel(palette, step, canvas) {
+  var randomDominant = palette.randomDominant();
+  console.log(randomDominant); // getChart(randomDominant, canvas, step, 'Random Dominant');
 }
 
 function triadWheel(palette, canvas) {
@@ -43882,7 +44066,7 @@ function getChartMono(baseColor, palette, canvas, step, title, type) {
 /*!*****************************!*\
   !*** ./src/js/utilities.js ***!
   \*****************************/
-/*! exports provided: isGreaterThan, isEven, isInRange */
+/*! exports provided: isGreaterThan, isEven, isInRange, getIntRandomNumber */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43890,6 +44074,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isGreaterThan", function() { return isGreaterThan; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEven", function() { return isEven; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInRange", function() { return isInRange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getIntRandomNumber", function() { return getIntRandomNumber; });
 // Utilities
 function isGreaterThan(num, max) {
   if (num > max) {
@@ -43912,6 +44097,10 @@ function isEven(number) {
   }
 
   return even;
+}
+
+function getIntRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max + 1 - min) + min);
 }
 
 

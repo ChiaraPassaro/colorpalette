@@ -22,4 +22,8 @@ function isEven(number) {
     return even;
 }
 
-export {isGreaterThan, isEven, isInRange};
+function getIntRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max + 1 - min) + min);
+}
+
+export {isGreaterThan, isEven, isInRange, getIntRandomNumber};

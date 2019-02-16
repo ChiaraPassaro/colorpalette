@@ -12,6 +12,8 @@ var inputStepDegreeAnalogous = $('#step-degree-analogous');
 var selectAnalogousType = $('#analogous-type');
 var inputRangeMono = $('#range-mono');
 var inputStepDegreeMono = $('#step-degree-mono');
+var inputRangeRandom = $('#range-random');
+var inputPercRandom = $('#perc-random');
 var selectMonoType = $('#mono-type');
 var button = $('#send');
 var canvasTriad = $('#doughnut__canvas-triad');
@@ -21,6 +23,7 @@ var canvasAnalogous = $('#doughnut__canvas-analogous');
 var canvasSquare = $('#doughnut__canvas-square');
 var canvasTetradic = $('#doughnut__canvas-tetradic');
 var canvasMono = $('#doughnut__canvas-mono');
+var canvasRandom = $('#doughnut__canvas-random');
 
 $(document).ready(function(){
 
@@ -48,7 +51,8 @@ function sendData(){
   var rangeMono = Math.floor(parseInt(inputRangeMono.val()));
   var stepDegreeMono = parseFloat(inputStepDegreeMono.val());
   var monoType = selectMonoType.val();
-
+  var rangeRandom = Math.floor(parseInt(inputRangeRandom.val()));
+  var percRandom = Math.floor(parseInt(inputPercRandom.val()));
 
   if(!isNaN(degree) && !isNaN(saturation) && !isNaN(brightness)){
     try {
@@ -62,6 +66,7 @@ function sendData(){
       $('.square').html('');
       $('.tetradic').html('');
       $('.mono').html('');
+      $('.random-dominant').html('');
        insertComplementary(color, palette, rangeComplementary, stepDegreeComplementary);
        triadWheel(palette, canvasTriad);
        complementarWheel(palette, rangeComplementary, stepDegreeComplementary, canvasComplementary);
@@ -75,6 +80,8 @@ function sendData(){
        tetradicWheel(palette, canvasTetradic);
        insertMono(color, palette, rangeMono, stepDegreeMono, monoType);
        monoWheel(palette, monoType, rangeMono, stepDegreeMono,  canvasMono);
+       insertRandomDominant(color, palette, rangeRandom, percRandom);
+       randomDominantWheel(palette, rangeRandom, canvasRandom);
       //analogousMono(palette, analogousType, rangeAnalogous, stepDegreeAnalogous, canvasAnalogous);
     } catch (error) {
       console.log(error);
@@ -258,6 +265,39 @@ function insertTetradic(color, palette){
   } catch (error) {
     console.log(error);
   }
+}
+
+
+function insertRandomDominant(color, palette, numColor, percDominant){
+  try {
+    var randomDominant = palette.randomDominant(numColor, percDominant);
+
+    var scheme = $('.template .scheme').clone();
+
+    scheme.children('.scheme__title').html('Random Dominant');
+
+    //clono schema e cancello
+    var colorTpl = scheme.find('.scheme__color').clone();
+    scheme.find('.scheme__colors').html('');
+
+    for (var i = 0; i < randomDominant.length; i++) {
+      var thisColor = colorTpl.clone();
+      thisColor.css('background', randomDominant[i].printHsl());
+      thisColor.html(randomDominant[i].printHsl());
+      scheme.find('.scheme__colors').append(thisColor);
+    }
+
+    $('.random-dominant').append(scheme);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function randomDominantWheel(palette, step, canvas) {
+  var randomDominant = palette.randomDominant();
+  console.log(randomDominant);
+ // getChart(randomDominant, canvas, step, 'Random Dominant');
 }
 
 function triadWheel(palette, canvas) {

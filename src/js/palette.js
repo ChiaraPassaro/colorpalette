@@ -50,12 +50,27 @@ function Hsl(degree, saturation, brightness) {
 
     return this;
 }
-
 function SetColorPalette(baseColor) {
+
     if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
 
     var _totalDegree = 360;
     var _baseColor = baseColor;
+    var _triad;
+    var _complementar;
+    var _analogous = {
+        'all': undefined,
+        'cold': undefined,
+        'warm': undefined,
+    };
+    var _splitComplementar;
+    var _square;
+    var _tetradic;
+    var _mono = {
+        'saturation': undefined,
+        'brightness': undefined,
+    };
+    var _randomDominant;
 
     //ritorna stringa con colore base
     this.getBasecolor = function () {
@@ -70,13 +85,23 @@ function SetColorPalette(baseColor) {
 
     //funzione che crea triade
     this.triad = function () {
-        return getColors(240, 2, 60);
+        _triad = getColors(240, 2, 60);
+        return _triad;
+    };
+
+    this.getTriad = function (colorPalette){
+        return _triad;
     };
 
     //funzione che crea complementari
     this.complementar = function (numColor, stepDegree) {
         if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
-        return getColors(140, numColor, stepDegree, 'complementary');
+        _complementar =  getColors(140, numColor, stepDegree, 'complementary');
+        return _complementar;
+    };
+
+    this.getComplementar = function () {
+        return _complementar;
     };
 
     //funzione che crea analoghi
@@ -86,44 +111,163 @@ function SetColorPalette(baseColor) {
 
         switch (typeScheme) {
             case 'allArch':
-                return getColors(120, numColor, stepDegree, 'analogous');
+                _analogous.all = getColors(120, numColor, stepDegree, 'analogous');
+                return _analogous.all;
             case 'cold':
-                return getColors(120, numColor, stepDegree, 'analogousCold');
+                 _analogous.cold= getColors(120, numColor, stepDegree, 'analogousCold');
+                return _analogous.cold;
             case 'warm':
-                return getColors(120, numColor, stepDegree, 'analogousWarm');
+                _analogous.warm =  getColors(120, numColor, stepDegree, 'analogousWarm');
+                return _analogous.warm;
         }
 
+    };
+
+    this.getAnalogous = function () {
+        return _analogous;
     };
 
     //funzione che crea complementari divergenti
     this.splitComplementar = function () {
-        return getColors(60, 2, 30, 'splitComplementary');
+        _splitComplementar =  getColors(60, 2, 30, 'splitComplementary');
+        return _splitComplementar;
+    };
+
+    this.getSplitComplementar = function () {
+        return _splitComplementar;
     };
 
     //funzione che crea schema Square
     this.square = function () {
-        return getColors(270, 3, 90, 'square');
+        _square =  getColors(270, 3, 90, 'square');
+        return _square;
+    };
+
+    this.getSquare = function () {
+        return _square;
     };
 
     //funzione che crea schema Tetradic
     this.tetradic = function () {
-        return getColors(330, 10, 30, 'tetradic');
+        _tetradic =  getColors(330, 10, 30, 'tetradic');
+        return _tetradic;
     };
 
     //funzione che crea schema Monochrome
     this.mono = function (numColor, stepDegree, typeScheme) {
-        console.log(!Utilities.isEven(numColor));
+       // console.log(!Utilities.isEven(numColor));
         if (!Utilities.isEven(numColor)) throw 'The Colors must be even';
 
         switch (typeScheme) {
             case 'saturation':
-                return getColorsMono(numColor, stepDegree, 'monoSaturation');
+                _mono.saturation =  getColorsMono(numColor, stepDegree, 'monoSaturation');
+                return _mono.saturation;
             case 'brightness':
-                return getColorsMono(numColor, stepDegree, 'monoBrightness');
+                _mono.brightness =  getColorsMono(numColor, stepDegree, 'monoBrightness');
+                return _mono.brightness;
         }
 
     };
 
+    this.getMono = function () {
+        return _mono;
+    };
+
+    //funzione che crea colori Random with Dominant
+    this.randomDominant = function (numColor, percDominant) {
+        return getRandomColors(numColor, percDominant);
+    };
+
+    this.getRandomDominant = function () {
+        return _randomDominant;
+    };
+
+    //funzuione che genera colori random
+    function getRandomColors (numColor, percDominant) {
+        var _totalDegree = 360;
+        var _num = numColor || 10;
+        _num = Math.floor(_num);
+        var _percDominant = percDominant;
+        _percDominant = Math.floor(_percDominant);
+        console.log('Perc Dominant richiesta ' +_percDominant);
+        var _step = [];
+
+        while(_step.length < numColor){
+            var randomStep = Utilities.getIntRandomNumber(0, _totalDegree);
+            if(!_step.includes(randomStep)){
+                _step.push(randomStep);
+            }
+        }
+
+        var _firstSchemeColor =  Math.floor(_baseColor.getDegree());
+
+        var _complementary =  _firstSchemeColor + 180;
+
+        //trasformo in caso sia inferiore a 0 o maggiore di 360
+        if (_complementary < 0) {
+            _complementary = Math.floor((_complementary + _totalDegree));
+        }
+
+        if (Utilities.isGreaterThan(_complementary, _totalDegree)) {
+            _complementary  = Math.floor((_complementary - _totalDegree));
+        }
+
+        //console.log("Complementare" + _complementary);
+
+        //inserisco primo colore
+         //var _arrayColors = [90, 350, 120, 220 , 60];
+
+        var _arrayColors = [_firstSchemeColor];
+
+        //genero i colori random
+        for (var i = 1; i < _num; i++) {
+            var _newColor = _firstSchemeColor + _step[i];
+            //trasformo in caso sia inferiore a 0 o maggiore di 360
+            if (_newColor < 0) {
+                _newColor = Math.floor((_newColor + _totalDegree));
+            }
+
+            if (Utilities.isGreaterThan(_newColor, _totalDegree)) {
+                _newColor  = Math.floor((_newColor - _totalDegree));
+            }
+
+            _arrayColors.push(_newColor);
+        }
+
+        var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree;
+            //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
+
+        _arrayColors.map(function (currentValue, index) {
+            //console.log('Colore di partenza ' + currentValue);
+
+            var thisColorInPerc = currentValue * 100 / _totalDegree;
+            //console.log('Colore in percentuale ' + thisColorInPerc);
+
+            var _perc = (Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100) * _percDominant;
+
+           // console.log('Perc ' + _perc);
+            var _newColorInPerc;
+
+            if(thisColorInPerc > _firstSchemeColorInPerc){
+                 _newColorInPerc = thisColorInPerc - _perc;
+            } else {
+                 _newColorInPerc = thisColorInPerc + _perc;
+            }
+
+           // console.log('nuovo valore in perc ' + _newColorInPerc);
+
+            currentValue = _newColorInPerc / 100 * _totalDegree;
+
+            _arrayColors[index] = Math.trunc(currentValue);
+           // console.log('nuovo valore in gradi ' + _arrayColors[index]);
+                //sostituisco con nuovo oggetto Hsl()
+            _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
+
+        });
+
+        return _arrayColors;
+
+    }
 
     //funzione che crea colori
     function getColors(rangeDegree, numColor, stepDegree, scheme) {
@@ -253,12 +397,12 @@ function SetColorPalette(baseColor) {
 
         var _scheme = scheme || false;
         switch (_scheme) {
-           case 'monoSaturation':
-               var _firstSchemeColor = parseFloat((_baseColor.getSaturation()).toFixed(2));
-               break;
-           case 'monoBrightness':
-               var _firstSchemeColor = parseFloat((_baseColor.getBrightness()).toFixed(2));
-               break;
+            case 'monoSaturation':
+                var _firstSchemeColor = parseFloat((_baseColor.getSaturation()).toFixed(2));
+                break;
+            case 'monoBrightness':
+                var _firstSchemeColor = parseFloat((_baseColor.getBrightness()).toFixed(2));
+                break;
         }
 
         var _arrayColors = [_firstSchemeColor];
@@ -306,7 +450,7 @@ function SetColorPalette(baseColor) {
         _arrayColors.reverse();
         return _arrayColors;
     }
-    
+
     return this;
 }
 
