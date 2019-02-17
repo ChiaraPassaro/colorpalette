@@ -373,7 +373,8 @@ function monoWheel(palette, typeScheme, stepDegree, canvas) {
   monopalette = monopalette[typeScheme];
   var basecolor = palette.getBasecolor();
   monopalette.push(basecolor);
-  getChartMono(basecolor, monopalette, canvas, stepDegree, 'MonoChrome', typeScheme, 'mono');
+  console.log(monopalette);
+  getChartMono(basecolor, monopalette, stepDegree, canvas, typeScheme, 'mono', 'MonoChrome');
 }
 
 function randomDominantWheel(palette, canvas) {
@@ -432,7 +433,8 @@ function getChart(palette, canvas, step, title, type) {
   });
 }
 
-function getChartMono(baseColor, palette, canvas, step, title, typeScheme, type) {
+function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title) {
+  console.log('In chart Mono ' + typeScheme);
   if(chart[type] !== null){
     if(chart[type].constructor === Chart){
       chart[type].destroy();
@@ -444,23 +446,25 @@ function getChartMono(baseColor, palette, canvas, step, title, typeScheme, type)
   for (var i = 0; i < 100 ; i++) {
     //tutti i gradi hanno valore 1 per comparire nella chart
     degrees.push(1);
-    //tutti i gradi hanno il colore di background ad opacità 0.1
-    if(type === 'saturation'){
-      colorsLabel.push('hsl('+  baseColor.getDegree() + ', '+ i +' %, '+ baseColor.getBrightness() +'%, 0.1)');
+    //tutti i gradi hanno il colore di background ad opacità 0
+    if(typeScheme === 'saturation'){
+      colorsLabel.push('hsl('+ baseColor.getDegree() + ', 100%, 90%)');
     }
-    else {
-      colorsLabel.push('hsl('+  baseColor.getDegree() + ', '+ baseColor.getSaturation()+ '%, '+ i +'%, 0.1)');
+    else if(typeScheme === 'brightness') {
+      colorsLabel.push('hsl('+  baseColor.getDegree() + ', 100%, 90%)');
     }
   }
 
   //inserisco i gradi della palette con dato uguale allo step usato per generare la palette
   for (var i = 0; i < palette.length; i++) {
     var degree;
-    if(type === 'saturation'){
+    if(typeScheme === 'saturation'){
       degree = palette[i].getSaturation();
+      console.log('saturation' + degree);
     }
-    else {
+    else if(typeScheme === 'brightness') {
       degree = palette[i].getBrightness();
+      console.log('brightness' + degree);
     }
     degrees[degree] =  step;
     colorsLabel[degree] = palette[i].printHsl();
@@ -474,7 +478,6 @@ function getChartMono(baseColor, palette, canvas, step, title, typeScheme, type)
     }],
     labels: colorsLabel
   };
-
   chart[type] = new Chart(canvas, {
     type: 'doughnut',
     data: data,
