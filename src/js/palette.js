@@ -53,7 +53,7 @@ function Hsl(degree, saturation, brightness) {
 function SetColorPalette(baseColor) {
 
     if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
-
+    //Setto variabili interne per i getters
     var _totalDegree = 360;
     var _baseColor = baseColor;
     var _triad;
@@ -89,7 +89,8 @@ function SetColorPalette(baseColor) {
         return _triad;
     };
 
-    this.getTriad = function (colorPalette){
+    //funzione che ritorna la triade settata
+    this.getTriad = function (){
         return _triad;
     };
 
@@ -100,6 +101,7 @@ function SetColorPalette(baseColor) {
         return _complementar;
     };
 
+    //funzione che ritorna i complementari settati
     this.getComplementar = function () {
         return _complementar;
     };
@@ -123,6 +125,7 @@ function SetColorPalette(baseColor) {
 
     };
 
+    //funzione che ritorna gli analoghi settati
     this.getAnalogous = function () {
         return _analogous;
     };
@@ -133,6 +136,7 @@ function SetColorPalette(baseColor) {
         return _splitComplementar;
     };
 
+    //funzione che ritorna i complementari divergenti settati
     this.getSplitComplementar = function () {
         return _splitComplementar;
     };
@@ -143,6 +147,7 @@ function SetColorPalette(baseColor) {
         return _square;
     };
 
+    //funzione che ritorna lo Square settato
     this.getSquare = function () {
         return _square;
     };
@@ -153,6 +158,7 @@ function SetColorPalette(baseColor) {
         return _tetradic;
     };
 
+    //funzione che ritorna i tetradici  settati
     this.getTetradic = function () {
         return _tetradic;
     };
@@ -173,6 +179,7 @@ function SetColorPalette(baseColor) {
 
     };
 
+    //funzione che ritorna lo schema Monochrome settato
     this.getMono = function () {
         return _mono;
     };
@@ -183,96 +190,10 @@ function SetColorPalette(baseColor) {
         return _randomDominant;
     };
 
+    //funzione che ritorna schema Random Dominant settato
     this.getRandomDominant = function () {
         return _randomDominant;
     };
-
-    //funzuione che genera colori random
-    function getRandomColors (numColor, percDominant) {
-        var _totalDegree = 360;
-        var _num = numColor || 10;
-        _num = Math.floor(_num);
-        var _percDominant = percDominant;
-        _percDominant = Math.floor(_percDominant);
-        console.log('Perc Dominant richiesta ' +_percDominant);
-        var _step = [];
-
-        while(_step.length < numColor){
-            var randomStep = Utilities.getIntRandomNumber(0, _totalDegree);
-            if(!_step.includes(randomStep)){
-                _step.push(randomStep);
-            }
-        }
-
-        var _firstSchemeColor =  Math.floor(_baseColor.getDegree());
-
-        var _complementary =  _firstSchemeColor + 180;
-
-        //trasformo in caso sia inferiore a 0 o maggiore di 360
-        if (_complementary < 0) {
-            _complementary = Math.floor((_complementary + _totalDegree));
-        }
-
-        if (Utilities.isGreaterThan(_complementary, _totalDegree)) {
-            _complementary  = Math.floor((_complementary - _totalDegree));
-        }
-
-        //console.log("Complementare" + _complementary);
-
-        //inserisco primo colore
-         //var _arrayColors = [90, 350, 120, 220 , 60];
-
-        var _arrayColors = [_firstSchemeColor];
-
-        //genero i colori random
-        for (var i = 1; i < _num; i++) {
-            var _newColor = _firstSchemeColor + _step[i];
-            //trasformo in caso sia inferiore a 0 o maggiore di 360
-            if (_newColor < 0) {
-                _newColor = Math.floor((_newColor + _totalDegree));
-            }
-
-            if (Utilities.isGreaterThan(_newColor, _totalDegree)) {
-                _newColor  = Math.floor((_newColor - _totalDegree));
-            }
-
-            _arrayColors.push(_newColor);
-        }
-
-        var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree;
-            //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
-
-        _arrayColors.map(function (currentValue, index) {
-            //console.log('Colore di partenza ' + currentValue);
-
-            var thisColorInPerc = currentValue * 100 / _totalDegree;
-            //console.log('Colore in percentuale ' + thisColorInPerc);
-
-            var _perc = (Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100) * _percDominant;
-
-           // console.log('Perc ' + _perc);
-            var _newColorInPerc;
-
-            if(thisColorInPerc > _firstSchemeColorInPerc){
-                 _newColorInPerc = thisColorInPerc - _perc;
-            } else {
-                 _newColorInPerc = thisColorInPerc + _perc;
-            }
-
-           // console.log('nuovo valore in perc ' + _newColorInPerc);
-
-            currentValue = _newColorInPerc / 100 * _totalDegree;
-
-            _arrayColors[index] = Math.trunc(currentValue);
-           // console.log('nuovo valore in gradi ' + _arrayColors[index]);
-                //sostituisco con nuovo oggetto Hsl()
-            _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
-
-        });
-
-        return _arrayColors;
-
-    }
 
     //funzione che crea colori
     function getColors(rangeDegree, numColor, stepDegree, scheme) {
@@ -454,6 +375,93 @@ function SetColorPalette(baseColor) {
         });
         _arrayColors.reverse();
         return _arrayColors;
+    }
+
+    //funzione che crea colori random
+    function getRandomColors (numColor, percDominant) {
+        var _totalDegree = 360;
+        var _num = numColor || 10;
+        _num = Math.floor(_num);
+        var _percDominant = percDominant;
+        _percDominant = Math.floor(_percDominant);
+        console.log('Perc Dominant richiesta ' +_percDominant);
+        var _step = [];
+
+        while(_step.length < numColor){
+            var randomStep = Utilities.getIntRandomNumber(0, _totalDegree);
+            if(!_step.includes(randomStep)){
+                _step.push(randomStep);
+            }
+        }
+
+        var _firstSchemeColor =  Math.floor(_baseColor.getDegree());
+
+        var _complementary =  _firstSchemeColor + 180;
+
+        //trasformo in caso sia inferiore a 0 o maggiore di 360
+        if (_complementary < 0) {
+            _complementary = Math.floor((_complementary + _totalDegree));
+        }
+
+        if (Utilities.isGreaterThan(_complementary, _totalDegree)) {
+            _complementary  = Math.floor((_complementary - _totalDegree));
+        }
+
+        //console.log("Complementare" + _complementary);
+
+        //inserisco primo colore
+        //var _arrayColors = [90, 350, 120, 220 , 60];
+
+        var _arrayColors = [_firstSchemeColor];
+
+        //genero i colori random
+        for (var i = 1; i < _num; i++) {
+            var _newColor = _firstSchemeColor + _step[i];
+            //trasformo in caso sia inferiore a 0 o maggiore di 360
+            if (_newColor < 0) {
+                _newColor = Math.floor((_newColor + _totalDegree));
+            }
+
+            if (Utilities.isGreaterThan(_newColor, _totalDegree)) {
+                _newColor  = Math.floor((_newColor - _totalDegree));
+            }
+
+            _arrayColors.push(_newColor);
+        }
+
+        var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree;
+        //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
+
+        _arrayColors.map(function (currentValue, index) {
+            //console.log('Colore di partenza ' + currentValue);
+
+            var thisColorInPerc = currentValue * 100 / _totalDegree;
+            //console.log('Colore in percentuale ' + thisColorInPerc);
+
+            var _perc = (Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100) * _percDominant;
+
+            // console.log('Perc ' + _perc);
+            var _newColorInPerc;
+
+            if(thisColorInPerc > _firstSchemeColorInPerc){
+                _newColorInPerc = thisColorInPerc - _perc;
+            } else {
+                _newColorInPerc = thisColorInPerc + _perc;
+            }
+
+            // console.log('nuovo valore in perc ' + _newColorInPerc);
+
+            currentValue = _newColorInPerc / 100 * _totalDegree;
+
+            _arrayColors[index] = Math.trunc(currentValue);
+            // console.log('nuovo valore in gradi ' + _arrayColors[index]);
+            //sostituisco con nuovo oggetto Hsl()
+            _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
+
+        });
+
+        return _arrayColors;
+
     }
 
     return this;

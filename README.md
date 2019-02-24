@@ -2,7 +2,7 @@
 
 Script che genera diversi tipi di palette a partire da un colore di base
 
-V1.4
+V1.4.1
 
 ## Funzionalità
 
@@ -16,7 +16,7 @@ Gradi (1-360)<br/>
 Saturazione (1-100)<br/> 
 Luminosità (1-100)<br/>
 
-##### Ritorna:
+##### Metodi:
 ```
 baseColor.getDegree() -> number
 baseColor.getSaturation() -> number
@@ -28,20 +28,32 @@ baseColor.printHsl() -> string hsl(degre, saturation% , brightness%)
 
 ```
 
-### Crea palette SetColorPalette:<br/>
+### Crea palette:<br/>
 ```
 var palette = new SetColorPalette(baseColor)
 ```
 ##### Argomenti: <br/>
-Colore di base
+Colore di base [obj Hsl]
 
-##### Ritorna:
+##### Metodi:
+
+### Colore di base
 ```
-palette.basecolor -> obj Hsl()
+palette.getBasecolor() -> obj Hsl()
+updateColorPalette(newColor)
 ```
-### Crea palette Triadica:<br/>
+### Palette Triadica:<br/>
+#### Crea palette Triadica:<br/>
 ```
 palette.triad()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
+#### Get palette Triadica 
+```
+palette.getTriad()
 ```
 ##### Ritorna:
 ```
@@ -61,6 +73,15 @@ Gradi massimi consentiti numColor*step = 140<br/>
 ```
 Array [obj Hsl(), obj Hsl(), ...]
 ```
+#### Get palette di colori complementari 
+```
+palette.getComplementar()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
+
 
 ### Crea palette di colori complementari divergenti:<br/>
 ```
@@ -70,6 +91,15 @@ palette.splitComplementar()
 ```
 Array [obj Hsl(), obj Hsl()]
 ```
+#### Get palette di colori complementari divergenti 
+```
+palette.splitComplementar()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
+
 
 ### Crea palette di colori analoghi:<br/>
 ```
@@ -84,6 +114,14 @@ Gradi massimi consentiti numColor*step = 60<br/>
 ```
 Array [obj Hsl(), obj Hsl(), ...]
 ```
+#### Get palette di colori analoghi 
+```
+palette.getAnalogous()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
 
 ### Crea palette di colori tetradica:<br/>
@@ -94,15 +132,31 @@ palette.tetradic()
 ```
 Array [obj Hsl(), obj Hsl()]
 ```
+#### Get palette di colori tetradica 
+```
+palette.getTetradic()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
 
-### Crea palette di colori quadratico:<br/>
+### Crea palette di colori quadratica:<br/>
 ```
 palette.square()
 ```
 ##### Ritorna:
 ```
 Array [obj Hsl(), obj Hsl()]
+```
+#### Get palette di colori quadratica 
+```
+palette.getSquare()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
 ```
 
 
@@ -119,8 +173,35 @@ Tipo di schema = Saturation / Brightness
 ```
 Array [obj Hsl(), obj Hsl()]
 ```
+#### Get palette di colori monocromo 
+```
+palette.getMono()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
 
-### ToDo color schemes<br/>
-Tetradic, Square, Monochrome, Random Colors whith dominant color<br/>
 
-![Color Palette](screen/screen14.png)
+### Crea palette di colori Random con Dominante
+```
+palette.randomDominant(numColor, percDominant
+```
+##### Argomenti:<br/>
+Numero di colori desiderati - numero pari <br/>
+Percentuale del colore di base dominante<br/>
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl()]
+```
+#### Get palette di colori Random con Dominante 
+```
+palette.getRandomDominant()
+```
+##### Ritorna:
+```
+Array [obj Hsl(), obj Hsl(), ...]
+```
+
+
+![Color Palette](screen/screen141.png)

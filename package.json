@@ -1,6 +1,6 @@
 {
   "name": "palettecolori",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "description": "Script che genera diversi tipi di palette a partire da un colore di base",
   "main": "index.html",
   "scripts": {
