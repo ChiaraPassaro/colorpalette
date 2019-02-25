@@ -203,5 +203,8 @@ palette.getRandomDominant()
 Array [obj Hsl(), obj Hsl(), ...]
 ```
 
+### TODO
+Conversione Hsl to RGBA, Hex
+Export to Text and ASE
 
 ![Color Palette](screen/screen141.png)
