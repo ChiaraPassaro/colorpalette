@@ -92,6 +92,10 @@ function sendData(){
        monoWheel(palette, monoType, stepDegreeMono, canvasMono);
        insertRandomDominant(color, palette, rangeRandom, percRandom);
        randomDominantWheel(palette, canvasRandom);
+
+        var hsl = new ColorPalette.RgbToHsl(194, 94, 94);
+        console.log(hsl.printHsl());
+
     } catch (error) {
       console.log(error);
     }

@@ -43121,13 +43121,15 @@ module.exports = function(module) {
 /*!***************************!*\
   !*** ./src/js/palette.js ***!
   \***************************/
-/*! exports provided: Hsl, SetColorPalette */
+/*! exports provided: Hsl, SetColorPalette, HslToRgb, RgbToHsl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Hsl", function() { return Hsl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetColorPalette", function() { return SetColorPalette; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HslToRgb", function() { return HslToRgb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RgbToHsl", function() { return RgbToHsl; });
 /* harmony import */ var _utilities_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilities.js */ "./src/js/utilities.js");
  //************************//
 //********Funzioni********//
@@ -43186,7 +43188,8 @@ function Hsl(degree, saturation, brightness) {
 }
 
 function SetColorPalette(baseColor) {
-  if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
+  if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object'; //Setto variabili interne per i getters
+
   var _totalDegree = 360;
   var _baseColor = baseColor;
 
@@ -43228,9 +43231,10 @@ function SetColorPalette(baseColor) {
   this.triad = function () {
     _triad = getColors(240, 2, 60);
     return _triad;
-  };
+  }; //funzione che ritorna la triade settata
 
-  this.getTriad = function (colorPalette) {
+
+  this.getTriad = function () {
     return _triad;
   }; //funzione che crea complementari
 
@@ -43239,7 +43243,8 @@ function SetColorPalette(baseColor) {
     if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isEven"](numColor)) throw 'The Colors must be even';
     _complementar = getColors(140, numColor, stepDegree, 'complementary');
     return _complementar;
-  };
+  }; //funzione che ritorna i complementari settati
+
 
   this.getComplementar = function () {
     return _complementar;
@@ -43262,7 +43267,8 @@ function SetColorPalette(baseColor) {
         _analogous.warm = getColors(120, numColor, stepDegree, 'analogousWarm');
         return _analogous.warm;
     }
-  };
+  }; //funzione che ritorna gli analoghi settati
+
 
   this.getAnalogous = function () {
     return _analogous;
@@ -43272,7 +43278,8 @@ function SetColorPalette(baseColor) {
   this.splitComplementar = function () {
     _splitComplementar = getColors(60, 2, 30, 'splitComplementary');
     return _splitComplementar;
-  };
+  }; //funzione che ritorna i complementari divergenti settati
+
 
   this.getSplitComplementar = function () {
     return _splitComplementar;
@@ -43282,7 +43289,8 @@ function SetColorPalette(baseColor) {
   this.square = function () {
     _square = getColors(270, 3, 90, 'square');
     return _square;
-  };
+  }; //funzione che ritorna lo Square settato
+
 
   this.getSquare = function () {
     return _square;
@@ -43292,7 +43300,8 @@ function SetColorPalette(baseColor) {
   this.tetradic = function () {
     _tetradic = getColors(330, 10, 30, 'tetradic');
     return _tetradic;
-  };
+  }; //funzione che ritorna i tetradici  settati
+
 
   this.getTetradic = function () {
     return _tetradic;
@@ -43312,7 +43321,8 @@ function SetColorPalette(baseColor) {
         _mono.brightness = getColorsMono(numColor, stepDegree, 'monoBrightness');
         return _mono.brightness;
     }
-  };
+  }; //funzione che ritorna lo schema Monochrome settato
+
 
   this.getMono = function () {
     return _mono;
@@ -43322,93 +43332,12 @@ function SetColorPalette(baseColor) {
   this.randomDominant = function (numColor, percDominant) {
     _randomDominant = getRandomColors(numColor, percDominant);
     return _randomDominant;
-  };
+  }; //funzione che ritorna schema Random Dominant settato
+
 
   this.getRandomDominant = function () {
     return _randomDominant;
-  }; //funzuione che genera colori random
-
-
-  function getRandomColors(numColor, percDominant) {
-    var _totalDegree = 360;
-
-    var _num = numColor || 10;
-
-    _num = Math.floor(_num);
-    var _percDominant = percDominant;
-    _percDominant = Math.floor(_percDominant);
-    console.log('Perc Dominant richiesta ' + _percDominant);
-    var _step = [];
-
-    while (_step.length < numColor) {
-      var randomStep = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["getIntRandomNumber"](0, _totalDegree);
-
-      if (!_step.includes(randomStep)) {
-        _step.push(randomStep);
-      }
-    }
-
-    var _firstSchemeColor = Math.floor(_baseColor.getDegree());
-
-    var _complementary = _firstSchemeColor + 180; //trasformo in caso sia inferiore a 0 o maggiore di 360
-
-
-    if (_complementary < 0) {
-      _complementary = Math.floor(_complementary + _totalDegree);
-    }
-
-    if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_complementary, _totalDegree)) {
-      _complementary = Math.floor(_complementary - _totalDegree);
-    } //console.log("Complementare" + _complementary);
-    //inserisco primo colore
-    //var _arrayColors = [90, 350, 120, 220 , 60];
-
-
-    var _arrayColors = [_firstSchemeColor]; //genero i colori random
-
-    for (var i = 1; i < _num; i++) {
-      var _newColor = _firstSchemeColor + _step[i]; //trasformo in caso sia inferiore a 0 o maggiore di 360
-
-
-      if (_newColor < 0) {
-        _newColor = Math.floor(_newColor + _totalDegree);
-      }
-
-      if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_newColor, _totalDegree)) {
-        _newColor = Math.floor(_newColor - _totalDegree);
-      }
-
-      _arrayColors.push(_newColor);
-    }
-
-    var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree; //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
-
-
-    _arrayColors.map(function (currentValue, index) {
-      //console.log('Colore di partenza ' + currentValue);
-      var thisColorInPerc = currentValue * 100 / _totalDegree; //console.log('Colore in percentuale ' + thisColorInPerc);
-
-      var _perc = Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100 * _percDominant; // console.log('Perc ' + _perc);
-
-
-      var _newColorInPerc;
-
-      if (thisColorInPerc > _firstSchemeColorInPerc) {
-        _newColorInPerc = thisColorInPerc - _perc;
-      } else {
-        _newColorInPerc = thisColorInPerc + _perc;
-      } // console.log('nuovo valore in perc ' + _newColorInPerc);
-
-
-      currentValue = _newColorInPerc / 100 * _totalDegree;
-      _arrayColors[index] = Math.trunc(currentValue); // console.log('nuovo valore in gradi ' + _arrayColors[index]);
-      //sostituisco con nuovo oggetto Hsl()
-
-      _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
-    });
-
-    return _arrayColors;
-  } //funzione che crea colori
+  }; //funzione che crea colori
 
 
   function getColors(rangeDegree, numColor, stepDegree, scheme) {
@@ -43608,7 +43537,188 @@ function SetColorPalette(baseColor) {
     _arrayColors.reverse();
 
     return _arrayColors;
+  } //funzione che crea colori random
+
+
+  function getRandomColors(numColor, percDominant) {
+    var _totalDegree = 360;
+
+    var _num = numColor || 10;
+
+    _num = Math.floor(_num);
+    var _percDominant = percDominant;
+    _percDominant = Math.floor(_percDominant);
+    var _step = [];
+
+    while (_step.length < numColor) {
+      var randomStep = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["getIntRandomNumber"](0, _totalDegree);
+
+      if (!_step.includes(randomStep)) {
+        _step.push(randomStep);
+      }
+    }
+
+    var _firstSchemeColor = Math.floor(_baseColor.getDegree());
+
+    var _complementary = _firstSchemeColor + 180; //trasformo in caso sia inferiore a 0 o maggiore di 360
+
+
+    if (_complementary < 0) {
+      _complementary = Math.floor(_complementary + _totalDegree);
+    }
+
+    if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_complementary, _totalDegree)) {
+      _complementary = Math.floor(_complementary - _totalDegree);
+    }
+
+    var _arrayColors = [_firstSchemeColor]; //genero i colori random
+
+    for (var i = 1; i < _num; i++) {
+      var _newColor = _firstSchemeColor + _step[i]; //trasformo in caso sia inferiore a 0 o maggiore di 360
+
+
+      if (_newColor < 0) {
+        _newColor = Math.floor(_newColor + _totalDegree);
+      }
+
+      if (_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isGreaterThan"](_newColor, _totalDegree)) {
+        _newColor = Math.floor(_newColor - _totalDegree);
+      }
+
+      _arrayColors.push(_newColor);
+    }
+
+    var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree;
+
+    _arrayColors.map(function (currentValue, index) {
+      var thisColorInPerc = currentValue * 100 / _totalDegree;
+
+      var _perc = Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100 * _percDominant;
+
+      var _newColorInPerc;
+
+      if (thisColorInPerc > _firstSchemeColorInPerc) {
+        _newColorInPerc = thisColorInPerc - _perc;
+      } else {
+        _newColorInPerc = thisColorInPerc + _perc;
+      }
+
+      currentValue = _newColorInPerc / 100 * _totalDegree;
+      _arrayColors[index] = Math.trunc(currentValue);
+      _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
+    });
+
+    return _arrayColors;
   }
+
+  return this;
+}
+
+function HslToRgb(h, s, l) {
+  if (isNaN(h)) throw 'Hue in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](h, 0, 360)) throw 'Hue number out of range';
+  if (isNaN(s)) throw 'Saturation in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](s, 0, 100)) throw 'Saturation number out of range';
+  if (isNaN(l)) throw 'Brightness in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](l, 0, 100)) throw 'Brightness number out of range';
+  var _h = h;
+
+  var _s = s / 100;
+
+  var _l = l / 100;
+  /*
+  Frome code by
+  Vahid Kazemi https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
+  */
+
+
+  var c = (1 - Math.abs(2 * _l - 1)) * _s;
+
+  var hp = _h / 60.0;
+  var x = c * (1 - Math.abs(hp % 2 - 1));
+  var rgb1;
+  if (isNaN(_h)) rgb1 = [0, 0, 0];else if (hp <= 1) rgb1 = [c, x, 0];else if (hp <= 2) rgb1 = [x, c, 0];else if (hp <= 3) rgb1 = [0, c, x];else if (hp <= 4) rgb1 = [0, x, c];else if (hp <= 5) rgb1 = [x, 0, c];else if (hp <= 6) rgb1 = [c, 0, x];
+  var m = _l - c * 0.5;
+
+  var _r = Math.round(255 * (rgb1[0] + m));
+
+  var _g = Math.round(255 * (rgb1[1] + m));
+
+  var _b = Math.round(255 * (rgb1[2] + m));
+
+  this.printRgb = function () {
+    return 'rgb(' + _r + ',' + _g + ',' + _b + ')';
+  };
+
+  this.getR = function () {
+    return _r;
+  };
+
+  this.getG = function () {
+    return _g;
+  };
+
+  this.getB = function () {
+    return _b;
+  };
+
+  return this;
+}
+
+function RgbToHsl(r, g, b) {
+  if (isNaN(r)) throw 'Red in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](r, 0, 255)) throw 'Red number out of range';
+  if (isNaN(g)) throw 'Green in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](g, 0, 255)) throw 'Green number out of range';
+  if (isNaN(b)) throw 'Blue in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](b, 0, 255)) throw 'Blue number out of range';
+  /*
+    Frome code by
+    Vahid Kazemi https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
+  */
+
+  var _r = r / 255;
+
+  var _g = g / 255;
+
+  var _b = b / 255;
+
+  var max = Math.max(_r, _g, _b);
+  var min = Math.min(_r, _g, _b);
+
+  var _d = max - min;
+
+  var _h;
+
+  if (_d === 0) _h = 0;else if (max === _r) _h = (_g - _b) / _d % 6;else if (max === _g) _h = (_b - _r) / _d + 2;else if (max === _b) _h = (_r - _g) / _d + 4;
+
+  var _l = (min + max) / 2;
+
+  var _s = _d === 0 ? 0 : _d / (1 - Math.abs(2 * _l - 1));
+
+  _h = _h * 60;
+  _l = Math.floor(_l * 100);
+  _s = Math.floor(_s * 100);
+
+  this.getHsl = function () {
+    return new Hsl(_h, _s, _l);
+  };
+
+  this.getHue = function () {
+    return _h;
+  };
+
+  this.getSaturation = function () {
+    return _s;
+  };
+
+  this.getBrightness = function () {
+    return _l;
+  };
+
+  this.printHsl = function () {
+    return 'hsl(' + _h + ', ' + _s + '%, ' + _l + '%)';
+  };
 
   return this;
 }
@@ -43715,6 +43825,8 @@ function sendData() {
       monoWheel(palette, monoType, stepDegreeMono, canvasMono);
       insertRandomDominant(color, palette, rangeRandom, percRandom);
       randomDominantWheel(palette, canvasRandom);
+      var hsl = new _palette__WEBPACK_IMPORTED_MODULE_0__["RgbToHsl"](194, 94, 94);
+      console.log(hsl.printHsl());
     } catch (error) {
       console.log(error);
     }
@@ -43967,7 +44079,6 @@ function monoWheel(palette, typeScheme, stepDegree, canvas) {
   monopalette = monopalette[typeScheme];
   var basecolor = palette.getBasecolor();
   monopalette.push(basecolor);
-  console.log(monopalette);
   getChartMono(basecolor, monopalette, stepDegree, canvas, typeScheme, 'mono', 'MonoChrome');
 }
 
@@ -44026,8 +44137,6 @@ function getChart(palette, canvas, step, title, type) {
 }
 
 function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title) {
-  console.log('In chart Mono ' + typeScheme);
-
   if (chart[type] !== null) {
     if (chart[type].constructor === Chart) {
       chart[type].destroy();
@@ -44039,7 +44148,7 @@ function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title)
 
   for (var i = 0; i < 100; i++) {
     //tutti i gradi hanno valore 1 per comparire nella chart
-    degrees.push(1); //tutti i gradi hanno il colore di background ad opacità 0
+    degrees.push(1); //tutti i gradi hanno colore base come quello di partenza ma con saturazione e luminosità fissi
 
     if (typeScheme === 'saturation') {
       colorsLabel.push('hsl(' + baseColor.getDegree() + ', 100%, 90%)');
@@ -44054,10 +44163,8 @@ function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title)
 
     if (typeScheme === 'saturation') {
       degree = palette[i].getSaturation();
-      console.log('saturation' + degree);
     } else if (typeScheme === 'brightness') {
       degree = palette[i].getBrightness();
-      console.log('brightness' + degree);
     }
 
     degrees[degree] = step;

@@ -384,7 +384,6 @@ function SetColorPalette(baseColor) {
         _num = Math.floor(_num);
         var _percDominant = percDominant;
         _percDominant = Math.floor(_percDominant);
-        console.log('Perc Dominant richiesta ' +_percDominant);
         var _step = [];
 
         while(_step.length < numColor){
@@ -407,11 +406,6 @@ function SetColorPalette(baseColor) {
             _complementary  = Math.floor((_complementary - _totalDegree));
         }
 
-        //console.log("Complementare" + _complementary);
-
-        //inserisco primo colore
-        //var _arrayColors = [90, 350, 120, 220 , 60];
-
         var _arrayColors = [_firstSchemeColor];
 
         //genero i colori random
@@ -430,17 +424,12 @@ function SetColorPalette(baseColor) {
         }
 
         var _firstSchemeColorInPerc = _firstSchemeColor * 100 / _totalDegree;
-        //console.log('Primo colore in perc' + _firstSchemeColorInPerc);
 
         _arrayColors.map(function (currentValue, index) {
-            //console.log('Colore di partenza ' + currentValue);
 
             var thisColorInPerc = currentValue * 100 / _totalDegree;
-            //console.log('Colore in percentuale ' + thisColorInPerc);
-
             var _perc = (Math.abs(_firstSchemeColorInPerc - thisColorInPerc) / 100) * _percDominant;
 
-            // console.log('Perc ' + _perc);
             var _newColorInPerc;
 
             if(thisColorInPerc > _firstSchemeColorInPerc){
@@ -449,13 +438,10 @@ function SetColorPalette(baseColor) {
                 _newColorInPerc = thisColorInPerc + _perc;
             }
 
-            // console.log('nuovo valore in perc ' + _newColorInPerc);
-
             currentValue = _newColorInPerc / 100 * _totalDegree;
 
             _arrayColors[index] = Math.trunc(currentValue);
-            // console.log('nuovo valore in gradi ' + _arrayColors[index]);
-            //sostituisco con nuovo oggetto Hsl()
+
             _arrayColors[index] = new Hsl(_arrayColors[index], _baseColor.getSaturation(), _baseColor.getBrightness());
 
         });
@@ -467,4 +453,119 @@ function SetColorPalette(baseColor) {
     return this;
 }
 
-export {Hsl, SetColorPalette};
+function HslToRgb(h, s, l) {
+    if (isNaN(h)) throw 'Hue in Not a Number';
+    if (!Utilities.isInRange(h, 0, 360)) throw 'Hue number out of range';
+    if (isNaN(s)) throw 'Saturation in Not a Number';
+    if (!Utilities.isInRange(s, 0, 100)) throw 'Saturation number out of range';
+    if (isNaN(l)) throw 'Brightness in Not a Number';
+    if (!Utilities.isInRange(l, 0, 100)) throw 'Brightness number out of range';
+
+    var _h = h;
+    var _s = s/100;
+    var _l = l/100;
+
+    /*
+    Frome code by
+    Vahid Kazemi https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
+    */
+
+    var c = (1 - Math.abs(2 * _l - 1)) * _s;
+    var hp = _h / 60.0;
+    var x = c * (1 - Math.abs((hp % 2) - 1));
+    var rgb1;
+
+    if (isNaN(_h)) rgb1 = [0, 0, 0];
+    else if (hp <= 1) rgb1 = [c, x, 0];
+    else if (hp <= 2) rgb1 = [x, c, 0];
+    else if (hp <= 3) rgb1 = [0, c, x];
+    else if (hp <= 4) rgb1 = [0, x, c];
+    else if (hp <= 5) rgb1 = [x, 0, c];
+    else if (hp <= 6) rgb1 = [c, 0, x];
+
+    var m = _l - c * 0.5;
+
+    var _r =  Math.round(255 * (rgb1[0] + m));
+    var _g =   Math.round(255 * (rgb1[1] + m));
+    var _b =  Math.round(255 * (rgb1[2] + m));
+
+
+    this.printRgb = function () {
+        return 'rgb(' + _r +',' + _g +','+ _b + ')';
+    };
+
+    this.getR = function () {
+        return _r;
+    };
+
+    this.getG = function () {
+        return _g;
+    };
+
+    this.getB = function () {
+        return _b;
+    };
+
+    return this;
+
+}
+
+function RgbToHsl(r, g, b) {
+    if (isNaN(r)) throw 'Red in Not a Number';
+    if (!Utilities.isInRange(r, 0, 255)) throw 'Red number out of range';
+    if (isNaN(g)) throw 'Green in Not a Number';
+    if (!Utilities.isInRange(g, 0, 255)) throw 'Green number out of range';
+    if (isNaN(b)) throw 'Blue in Not a Number';
+    if (!Utilities.isInRange(b, 0, 255)) throw 'Blue number out of range';
+
+    /*
+      Frome code by
+      Vahid Kazemi https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
+    */
+
+    var _r = r / 255;
+    var _g = g / 255;
+    var _b = b / 255;
+
+    var max = Math.max(_r, _g, _b);
+    var min = Math.min(_r, _g, _b);
+    var _d = max - min;
+    var _h;
+
+    if (_d === 0) _h = 0;
+    else if (max === _r) _h = (_g - _b) / _d % 6;
+    else if (max === _g) _h = (_b - _r) / _d + 2;
+    else if (max === _b) _h = (_r - _g) / _d + 4;
+
+    var _l = (min + max) / 2;
+    var _s = _d === 0 ? 0 : _d / (1 - Math.abs(2 * _l - 1));
+    _h = _h * 60;
+
+    _l = Math.floor(_l * 100);
+    _s = Math.floor(_s * 100);
+
+    this.getHsl = function () {
+       return new Hsl(_h, _s, _l);
+    };
+
+    this.getHue = function () {
+        return _h;
+    };
+
+    this.getSaturation = function () {
+        return _s;
+    };
+
+    this.getBrightness = function () {
+        return _l;
+    };
+
+    this.printHsl = function () {
+        return 'hsl(' + _h + ', ' + _s + '%, ' + _l + '%)';
+    };
+
+    return this;
+}
+
+
+export {Hsl, SetColorPalette, HslToRgb, RgbToHsl};
