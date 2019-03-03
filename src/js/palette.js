@@ -50,6 +50,75 @@ function Hsl(degree, saturation, brightness) {
 
     return this;
 }
+
+function Rgb(red, green, blue) {
+    //controllo se i dati sono esatti
+    if (isNaN(red)) throw 'Red in Not a Number';
+    if (!Utilities.isInRange(red, 0, 255)) throw 'Red number out of range';
+    if (isNaN(green)) throw 'Green in Not a Number';
+    if (!Utilities.isInRange(green, 0, 255)) throw 'Green number out of range';
+    if (isNaN(blue)) throw 'Blue in Not a Number';
+    if (!Utilities.isInRange(blue, 0, 255)) throw 'Blue number out of range';
+
+    var _red = red;
+    var _green = green;
+    var _blue = blue;
+
+    this.getRed = function () {
+        return _red;
+    };
+
+    this.getGreen = function () {
+        return _green;
+    };
+
+    this.getBlue = function () {
+        return _blue;
+    };
+
+    this.printRgb = function () {
+        return 'rgb(' + _red + ', ' + _green + ', ' + _blue + ')';
+    };
+
+    this.setRed = function (newRed) {
+        if (isNaN(newRed)) throw 'Red in Not a Number';
+        if (!Utilities.isInRange(newRed, 0, 255)) throw 'Red number out of range';
+        _red = newRed;
+    };
+
+    this.setGreen = function (newGreen) {
+        if (isNaN(newGreen)) throw 'Green in Not a Number';
+        if (!Utilities.isInRange(newGreen, 0, 255)) throw 'Green number out of range';
+        _green = newGreen;
+    };
+
+    this.setBlue = function (newBlue) {
+        if (isNaN(newBlue)) throw 'Blue in Not a Number';
+        if (!Utilities.isInRange(newBlue, 0, 255)) throw 'Blue number out of range';
+        _blue = newBlue;
+    };
+
+    return this;
+}
+
+function Hex(hex) {
+    var _hex = hex.replace('#', '');
+
+    if (!Utilities.isHex(_hex)) throw 'This is in Not a Hex';
+
+    this.printHex = function () {
+        return '#'+ _hex;
+    };
+
+    this.setHex = function (newHex) {
+        newHex = newHex.replace('#', '');
+        if (!Utilities.isHex(newHex)) throw 'This is in Not a Hex';
+        _hex = newHex;
+    };
+
+    return this;
+}
+
 function SetColorPalette(baseColor) {
 
     if (baseColor.constructor !== Hsl) throw 'Basecolor is not an object';
@@ -453,7 +522,7 @@ function SetColorPalette(baseColor) {
     return this;
 }
 
-function HslToRgb(h, s, l) {
+function HslConvert(h, s, l) {
     if (isNaN(h)) throw 'Hue in Not a Number';
     if (!Utilities.isInRange(h, 0, 360)) throw 'Hue number out of range';
     if (isNaN(s)) throw 'Saturation in Not a Number';
@@ -489,9 +558,12 @@ function HslToRgb(h, s, l) {
     var _g =   Math.round(255 * (rgb1[1] + m));
     var _b =  Math.round(255 * (rgb1[2] + m));
 
+    var _rToHex = Utilities.numberToHex(_r);
+    var _gToHex = Utilities.numberToHex(_g);
+    var _bToHex = Utilities.numberToHex(_b);
 
-    this.printRgb = function () {
-        return 'rgb(' + _r +',' + _g +','+ _b + ')';
+    this.getRgb = function () {
+        return new Rgb(_r, _g, _b);
     };
 
     this.getR = function () {
@@ -506,11 +578,16 @@ function HslToRgb(h, s, l) {
         return _b;
     };
 
+    this.getHex = function(){
+        var thisHex = '#' + _rToHex + _gToHex + _bToHex;
+        return new Hex(thisHex);
+    };
+
     return this;
 
 }
 
-function RgbToHsl(r, g, b) {
+function RgbConvert(r, g, b) {
     if (isNaN(r)) throw 'Red in Not a Number';
     if (!Utilities.isInRange(r, 0, 255)) throw 'Red number out of range';
     if (isNaN(g)) throw 'Green in Not a Number';
@@ -544,28 +621,82 @@ function RgbToHsl(r, g, b) {
     _l = Math.floor(_l * 100);
     _s = Math.floor(_s * 100);
 
-    this.getHsl = function () {
-       return new Hsl(_h, _s, _l);
-    };
+    var _rToHex = Utilities.numberToHex(_r);
+    var _gToHex = Utilities.numberToHex(_g);
+    var _bToHex = Utilities.numberToHex(_b);
 
-    this.getHue = function () {
+    this.getH = function () {
         return _h;
     };
 
-    this.getSaturation = function () {
+    this.getS = function () {
         return _s;
     };
 
-    this.getBrightness = function () {
+    this.getL = function () {
         return _l;
     };
 
-    this.printHsl = function () {
-        return 'hsl(' + _h + ', ' + _s + '%, ' + _l + '%)';
+    this.getHsl = function () {
+        return new Hsl( _h,  _s, _l);
+    };
+
+    this.getHex = function(){
+        return '#' + _rToHex + _gToHex + _bToHex;
     };
 
     return this;
 }
 
+function HexConvert(hex) {
+    var _hex = hex.replace('#', '');
 
-export {Hsl, SetColorPalette, HslToRgb, RgbToHsl};
+    if (!Utilities.isHex(_hex)) throw 'This is in Not a Hex';
+
+    var rgb = {
+        'r' : '',
+        'g' : '',
+        'b' : ''
+    };
+
+    rgb.r = parseInt(_hex.slice(0, 2), 16);
+    rgb.g = parseInt(_hex.slice(2, 4), 16);
+    rgb.b = parseInt(_hex.slice(4, 6), 16);
+
+    this.getRgb = function(){
+        return new Rgb(rgb.r, rgb.g, rgb.b);
+    };
+
+    this.getR = function () {
+        return rgb.r;
+    };
+
+    this.getG = function () {
+        return rgb.g;
+    };
+
+    this.getB = function () {
+        return rgb.b;
+    };
+
+    var hslConvert = new RgbConvert(rgb.r, rgb.g, rgb.b);
+
+    this.getHsl = function () {
+        return hslConvert.getHsl();
+    };
+
+    this.getH = function () {
+        return hslConvert.getH();
+    };
+
+    this.getS = function () {
+        return hslConvert.getS();
+    };
+
+    this.getL = function () {
+        return hslConvert.getL();
+    };
+}
+
+
+export {Hsl, SetColorPalette, HslConvert, RgbConvert, HexConvert};

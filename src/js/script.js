@@ -191,7 +191,6 @@ function insertSplitComplementary(color, palette){
   }
 }
 
-
 function insertAnalogous(color, palette,  range, degree, analogousType){
   try {
     var analogous = palette.analogous(analogousType, range, degree);
@@ -329,7 +328,6 @@ function insertRandomDominant(color, palette, numColor, percDominant){
     console.log(error);
   }
 }
-
 
 function triadWheel(palette, canvas) {
   var triad = palette.getTriad();

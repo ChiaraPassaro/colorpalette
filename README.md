@@ -203,8 +203,103 @@ palette.getRandomDominant()
 Array [obj Hsl(), obj Hsl(), ...]
 ```
 
+
+## Utility di conversione
+### Converte colore Hsl:<br/>
+```
+var color = new HslConvert(h, s, l)
+```
+
+##### Argomenti: <br/>
+h (1-360)<br/>
+s (1-100)<br/> 
+l (1-100)<br/>
+
+##### Metodi:
+```
+color.getRgb() -> [Obj] new Rgb(r, g, b) 
+color.getR() -> number
+color.getG() -> number
+color.getB() -> number
+color.getHex() -> [Obj] new Hex(#RRGGBB) 
+```
+
+### Converte colore Rgb:<br/>
+```
+var color = new RgbConvert(r, g, b)
+```
+
+##### Argomenti: <br/>
+r (1-255)<br/>
+g (1-255)<br/> 
+b (1-255)<br/>
+
+##### Metodi:
+```
+color.getHsl() -> [Obj] new Hsl(degree, saturation, brightness)
+color.getH() -> number
+color.getS() -> number
+color.getL() -> number
+color.getHex() -> [Obj] new Hex(#RRGGBB) 
+```
+ 
+### Converte colore Esadecimale:<br/>
+```
+var color = new HexConvert(#RRGGBB)
+```
+
+##### Argomenti: <br/>
+hex (#RRGGBB)<br/>
+
+##### Metodi:
+```
+color.getRgb() -> [Obj] new Rgb(r, g, b) 
+color.getR() -> number
+color.getG() -> number
+color.getB() -> number
+color.getHsl() -> [Obj] new Hsl(degree, saturation, brightness)
+color.getH() -> number
+color.getS() -> number
+color.getL() -> number
+```
+ 
+### Crea colore Rgb:<br/>
+```
+var color = new Rgb(r, g, b)
+```
+
+##### Argomenti: <br/>
+Red (1-255)<br/>
+Green (1-255)<br/> 
+Blue (1-255)<br/>
+
+##### Metodi:
+```
+color.getRed() -> number
+color.getGreen() -> number
+color.getBlue() -> number
+color.printHsl() -> string rgb(r, g , b)
+color.setRed(number)
+color.setBlue(number)
+color.setGreen(number)
+
+```
+
+### Crea colore Esadecimale:<br/>
+```
+var color = new Hex(#RRGGBB)
+```
+
+##### Argomenti: <br/>
+\#RRGGBB
+
+##### Metodi:
+```
+color.printHex() -> string #RRGGBB
+color.setHex(#RRGGBB)
+```
+
 ### TODO
-Conversione Hsl to RGBA, Hex
 Export to Text and ASE
 
 ![Color Palette](screen/screen141.png)

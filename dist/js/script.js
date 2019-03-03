@@ -43121,15 +43121,16 @@ module.exports = function(module) {
 /*!***************************!*\
   !*** ./src/js/palette.js ***!
   \***************************/
-/*! exports provided: Hsl, SetColorPalette, HslToRgb, RgbToHsl */
+/*! exports provided: Hsl, SetColorPalette, HslConvert, RgbConvert, HexConvert */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Hsl", function() { return Hsl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetColorPalette", function() { return SetColorPalette; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HslToRgb", function() { return HslToRgb; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RgbToHsl", function() { return RgbToHsl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HslConvert", function() { return HslConvert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RgbConvert", function() { return RgbConvert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HexConvert", function() { return HexConvert; });
 /* harmony import */ var _utilities_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilities.js */ "./src/js/utilities.js");
  //************************//
 //********Funzioni********//
@@ -43182,6 +43183,73 @@ function Hsl(degree, saturation, brightness) {
     if (isNaN(newBrightness)) throw 'Brightness in Not a Number';
     if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](newBrightness, 0, 100)) throw 'Brightness number out of range';
     _brightness = parseFloat(newBrightness.toFixed(2));
+  };
+
+  return this;
+}
+
+function Rgb(red, green, blue) {
+  //controllo se i dati sono esatti
+  if (isNaN(red)) throw 'Red in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](red, 0, 255)) throw 'Red number out of range';
+  if (isNaN(green)) throw 'Green in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](green, 0, 255)) throw 'Green number out of range';
+  if (isNaN(blue)) throw 'Blue in Not a Number';
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](blue, 0, 255)) throw 'Blue number out of range';
+  var _red = red;
+  var _green = green;
+  var _blue = blue;
+
+  this.getRed = function () {
+    return _red;
+  };
+
+  this.getGreen = function () {
+    return _green;
+  };
+
+  this.getBlue = function () {
+    return _blue;
+  };
+
+  this.printRgb = function () {
+    return 'rgb(' + _red + ', ' + _green + ', ' + _blue + ')';
+  };
+
+  this.setRed = function (newRed) {
+    if (isNaN(newRed)) throw 'Red in Not a Number';
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](newRed, 0, 255)) throw 'Red number out of range';
+    _red = newRed;
+  };
+
+  this.setGreen = function (newGreen) {
+    if (isNaN(newGreen)) throw 'Green in Not a Number';
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](newGreen, 0, 255)) throw 'Green number out of range';
+    _green = newGreen;
+  };
+
+  this.setBlue = function (newBlue) {
+    if (isNaN(newBlue)) throw 'Blue in Not a Number';
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](newBlue, 0, 255)) throw 'Blue number out of range';
+    _blue = newBlue;
+  };
+
+  return this;
+}
+
+function Hex(hex) {
+  var _hex = hex.replace('#', '');
+
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isHex"](_hex)) throw 'This is in Not a Hex';
+
+  this.printHex = function () {
+    return '#' + _hex;
+  };
+
+  this.setHex = function (newHex) {
+    newHex = newHex.replace('#', '');
+    if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isHex"](newHex)) throw 'This is in Not a Hex';
+    _hex = newHex;
   };
 
   return this;
@@ -43614,7 +43682,7 @@ function SetColorPalette(baseColor) {
   return this;
 }
 
-function HslToRgb(h, s, l) {
+function HslConvert(h, s, l) {
   if (isNaN(h)) throw 'Hue in Not a Number';
   if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](h, 0, 360)) throw 'Hue number out of range';
   if (isNaN(s)) throw 'Saturation in Not a Number';
@@ -43646,8 +43714,14 @@ function HslToRgb(h, s, l) {
 
   var _b = Math.round(255 * (rgb1[2] + m));
 
-  this.printRgb = function () {
-    return 'rgb(' + _r + ',' + _g + ',' + _b + ')';
+  var _rToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_r);
+
+  var _gToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_g);
+
+  var _bToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_b);
+
+  this.getRgb = function () {
+    return new Rgb(_r, _g, _b);
   };
 
   this.getR = function () {
@@ -43662,10 +43736,15 @@ function HslToRgb(h, s, l) {
     return _b;
   };
 
+  this.getHex = function () {
+    var thisHex = '#' + _rToHex + _gToHex + _bToHex;
+    return new Hex(thisHex);
+  };
+
   return this;
 }
 
-function RgbToHsl(r, g, b) {
+function RgbConvert(r, g, b) {
   if (isNaN(r)) throw 'Red in Not a Number';
   if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isInRange"](r, 0, 255)) throw 'Red number out of range';
   if (isNaN(g)) throw 'Green in Not a Number';
@@ -43700,27 +43779,81 @@ function RgbToHsl(r, g, b) {
   _l = Math.floor(_l * 100);
   _s = Math.floor(_s * 100);
 
+  var _rToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_r);
+
+  var _gToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_g);
+
+  var _bToHex = _utilities_js__WEBPACK_IMPORTED_MODULE_0__["numberToHex"](_b);
+
+  this.getH = function () {
+    return _h;
+  };
+
+  this.getS = function () {
+    return _s;
+  };
+
+  this.getL = function () {
+    return _l;
+  };
+
   this.getHsl = function () {
     return new Hsl(_h, _s, _l);
   };
 
-  this.getHue = function () {
-    return _h;
-  };
-
-  this.getSaturation = function () {
-    return _s;
-  };
-
-  this.getBrightness = function () {
-    return _l;
-  };
-
-  this.printHsl = function () {
-    return 'hsl(' + _h + ', ' + _s + '%, ' + _l + '%)';
+  this.getHex = function () {
+    return '#' + _rToHex + _gToHex + _bToHex;
   };
 
   return this;
+}
+
+function HexConvert(hex) {
+  var _hex = hex.replace('#', '');
+
+  if (!_utilities_js__WEBPACK_IMPORTED_MODULE_0__["isHex"](_hex)) throw 'This is in Not a Hex';
+  var rgb = {
+    'r': '',
+    'g': '',
+    'b': ''
+  };
+  rgb.r = parseInt(_hex.slice(0, 2), 16);
+  rgb.g = parseInt(_hex.slice(2, 4), 16);
+  rgb.b = parseInt(_hex.slice(4, 6), 16);
+
+  this.getRgb = function () {
+    return new Rgb(rgb.r, rgb.g, rgb.b);
+  };
+
+  this.getR = function () {
+    return rgb.r;
+  };
+
+  this.getG = function () {
+    return rgb.g;
+  };
+
+  this.getB = function () {
+    return rgb.b;
+  };
+
+  var hslConvert = new RgbConvert(rgb.r, rgb.g, rgb.b);
+
+  this.getHsl = function () {
+    return hslConvert.getHsl();
+  };
+
+  this.getH = function () {
+    return hslConvert.getH();
+  };
+
+  this.getS = function () {
+    return hslConvert.getS();
+  };
+
+  this.getL = function () {
+    return hslConvert.getL();
+  };
 }
 
 
@@ -44199,7 +44332,7 @@ function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title)
 /*!*****************************!*\
   !*** ./src/js/utilities.js ***!
   \*****************************/
-/*! exports provided: isGreaterThan, isEven, isInRange, getIntRandomNumber */
+/*! exports provided: isGreaterThan, isEven, isInRange, getIntRandomNumber, numberToHex, hexToNumber, isHex */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44208,6 +44341,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEven", function() { return isEven; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInRange", function() { return isInRange; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getIntRandomNumber", function() { return getIntRandomNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numberToHex", function() { return numberToHex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hexToNumber", function() { return hexToNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isHex", function() { return isHex; });
 // Utilities
 function isGreaterThan(num, max) {
   if (num > max) {
@@ -44234,6 +44370,32 @@ function isEven(number) {
 
 function getIntRandomNumber(min, max) {
   return Math.floor(Math.random() * (max + 1 - min) + min);
+}
+
+function numberToHex(number) {
+  var hex = number.toString(16);
+
+  if (hex.length === 1) {
+    hex = '0' + hex;
+  }
+
+  return hex;
+}
+
+function hexToNumber(hex) {
+  var num = parseInt(hex, 16);
+  return num;
+}
+
+function isHex(hex) {
+  var isHex = false;
+  var num = parseInt(hex, 16);
+
+  if (num.toString(16) === hex.toLowerCase()) {
+    isHex = true;
+  }
+
+  return isHex;
 }
 
 
