@@ -700,4 +700,4 @@ function HexConvert(hex) {
 }
 
 
-export {Hsl, SetColorPalette, HslConvert, RgbConvert, HexConvert};
+export {Hsl, Rgb, Hex, SetColorPalette, HslConvert, RgbConvert, HexConvert};
