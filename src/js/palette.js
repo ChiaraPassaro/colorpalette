@@ -642,7 +642,8 @@ function RgbConvert(r, g, b) {
     };
 
     this.getHex = function(){
-        return '#' + _rToHex + _gToHex + _bToHex;
+        var hex = '#' + _rToHex + _gToHex + _bToHex;
+        return new Hex(hex);
     };
 
     return this;
