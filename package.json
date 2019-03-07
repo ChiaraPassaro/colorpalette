@@ -1,5 +1,5 @@
 {
-  "name": "palettecolori",
+  "name": "colorpalette",
   "version": "1.4.1",
   "description": "Script che genera diversi tipi di palette a partire da un colore di base",
   "main": "index.html",
@@ -16,7 +16,7 @@
     "url": "git+https://github.com/ChiaraPassaro/colorpalette.git"
   },
   "keywords": [],
-  "author": "Chiara Passaro, Emanuele Mazzante",
+  "author": "Chiara Passaro chiarapassaro.wd@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ChiaraPassaro/colorpalette/issues"

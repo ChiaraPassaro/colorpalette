@@ -1,5 +1,3 @@
-import {Hsl} from "./palette";
-
 var $ = require("jquery");
 var Chart = require('chart.js');
 import * as ColorPalette from './palette.js';
@@ -400,7 +398,7 @@ function getChart(palette, canvas, step, title, type) {
 
   //inserisco i gradi della palette con dato uguale allo step usato per generare la palette
   for (var i = 0; i < palette.length; i++) {
-    var degree = palette[i].getDegree();
+    var degree = palette[i].getHue();
     degrees[degree] =  step;
     colorsLabel[degree] = palette[i].printHsl();
   }
@@ -445,10 +443,10 @@ function getChartMono(baseColor, palette, step, canvas, typeScheme, type, title)
     degrees.push(1);
     //tutti i gradi hanno colore base come quello di partenza ma con saturazione e luminosità fissi
     if(typeScheme === 'saturation'){
-      colorsLabel.push('hsl('+ baseColor.getDegree() + ', 100%, 90%)');
+      colorsLabel.push('hsl('+ baseColor.getHue() + ', 100%, 90%)');
     }
     else if(typeScheme === 'brightness') {
-      colorsLabel.push('hsl('+  baseColor.getDegree() + ', 100%, 90%)');
+      colorsLabel.push('hsl('+  baseColor.getHue() + ', 100%, 90%)');
     }
   }
 
